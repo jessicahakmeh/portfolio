@@ -1,0 +1,260 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: rgb(0, 35, 71);
+    font-family: 'Leelawadee', sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+}
+
+.content h2 {
+    font-size: 2rem; /* Scalable text size */
+}
+
+
+
+#welcome {
+    height: 100vh; /* Full height for the welcome section */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw; /* Scales based on viewport width */
+    height: 50vw; /* Keeps the box square and scales */
+    max-width: 400px; /* Ensures a reasonable maximum size */
+    max-height: 400px; /* Ensures a reasonable maximum size */
+    background: #111845a6;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgb(23, 32, 90);
+    border: 2px solid #2a3cad;
+    color: white;
+    padding: 20px;
+}
+
+.box:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+.box .content {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border: 1px solid #00C7C7;
+    padding: 2rem; /* Scalable padding */
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(9, 0, 0, 0.5);
+}
+
+.box span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+.box span:nth-child(1) {
+    transform: rotate(0deg);
+}
+
+.box span:nth-child(2) {
+    transform: rotate(90deg);
+}
+
+.box span:nth-child(3) {
+    transform: rotate(180deg);
+}
+
+.box span:nth-child(4) {
+    transform: rotate(270deg);
+}
+
+.box span:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #00C7C7;
+    animation: animate 3s linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+    50% {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+    50.1% {
+        transform: scaleX(1);
+        transform-origin: right;
+    }
+    100% {
+        transform: scaleX(0);
+        transform-origin: right;
+    }
+}
+
+/* Media Queries for Smaller Screens */
+@media (max-width: 600px) {
+    .box {
+        width: 80vw;
+        height: 80vw;
+    }
+
+    .content h2 {
+        font-size: 1.5rem;
+    }
+
+    .box .content {
+        padding: 1rem;
+    }
+}
+
+/* Skills Section */
+#skills {
+    background: rgba(0, 35, 71, 0.9); /* Semi-transparent background */
+    padding: 50px 20px; /* Add padding */
+    text-align: center; /* Center the text */
+}
+
+#skills h2 {
+    font-size: 2.5rem; /* Size for the heading */
+    margin-bottom: 20px; /* Spacing below the heading */
+    color: #00C7C7; 
+}
+
+/* Collapsible section */
+.collapsible {
+    margin-bottom: 20px;
+    background-color: #002347;
+    border: 2px solid #00C7C7; /* Add border around the collapsible */
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  /* Header of the collapsible section */
+  .collapsible .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s   
+   ease-in-out;
+  }
+  
+  /* Arrow icon */
+  .collapsible .header .arrow {
+    font-size: 18px;
+    width: 30px; /* Fixed width to create a square */
+    height: 30px; /* Fixed height to create a square */
+    display: flex; /* Use flexbox to center content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    background-color: #002347; /* Keep background color */
+    border: 1px solid #00C7C7; /* Add a border */
+    border-radius: 5px; /* Optional: add border-radius for rounded corners */
+    margin-left: 10px; /* Add margin to separate it from the text */
+    transition: transform 0.3s ease-in-out; /* Keep the transition */
+}
+  
+/* Content of the collapsible section */
+.collapsible .content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+    text-align: left; /* Align the text to the left */
+    box-sizing: border-box; /* Ensures padding is included within the width */
+    word-wrap: break-word; /* Ensures long words break to fit the container */
+}
+  
+/* Hover effect for header */
+.collapsible .header:hover {
+    background-image: linear-gradient(to right, #002347,#00C7C7);
+}
+  
+/* Animation for arrow */
+.collapsible .header:hover .arrow {
+    transform: rotate(90deg);
+}
+  
+/* Show content on click */
+.collapsible.active .content {
+    max-height: 300px; /* Adjust the height as needed */
+}
+
+.collapsible .content ul {
+    padding-left: 20px; /* Add some left padding to indent the list */
+    list-style-type: disc; /* Use disc bullets for the list */
+}
+
+.collapsible .content li {
+    padding: 10px;
+    line-height: 1.5;
+}
+
+
+
+.hidden{
+    opacity: 0;
+    transition: all 1s;
+}
+
+@media(prefers-reduced-motion) {
+    .hidden{
+        transition: none;
+    }
+}
+
+.collapsible:nth-child(2){
+    transition-delay: 200ms;
+}
+.collapsible:nth-child(3){
+    transition-delay: 400ms;
+}
+.collapsible:nth-child(4){
+    transition-delay: 600ms;
+}
+.collapsible:nth-child(5){
+    transition-delay: 800ms;
+}
+.collapsible:nth-child(6){
+    transition-delay: 1s;
+}
+
+.show{
+    opacity: 1;
+}

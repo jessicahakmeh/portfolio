@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jessica Hakmeh's Portfolio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Leelawadee&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="app.js"></script>
+</head>
+<body>
+    <section id="welcome">
+        <div class="container">
+            <div class="box">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class="content">
+                    <h1>Empowering Tomorrow with Technology </h1>
+                    <p><br>Hello and Welcome to my portfolio.<br><br> My name is <b>Jessica Hakmeh </b>and I coded this website. <br><br> Let's scroll in a journey to discover more about me.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="skills">
+        <div class="container">
+            <h2>My Skills and Expertise</h2><br>
+            <div class="collapsible hidden">
+                <div class="header">
+                    <h3>Digital Transformation</h3>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="content">
+                    <ul>
+                        <li>Assess technological need, gather requirements</li>
+                        <li>Design solutions to streamline and automate traditional workflows</li>
+                        <li>Innovate and Renovate Systems and Procedures</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible hidden">
+                <div class="header">
+                    <h3>DevOps</h3>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="content">
+                    <ul>
+                        <li>Project Management: draw requirements using UML, set project timeline, supervise bottlenecks and operations</li>
+                        <li>Cloud and Local Hosting, with DNS, SSL and VPS management</li>
+                        <li>Web Programming languages: HTML, CSS, JavaScript, PHP</li>
+                        <li>Native Programming languages: Python, Java</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible hidden">
+                <div class="header">
+                    <h3>Networking</h3>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="content">
+                    <ul>
+                        <li>Topology Planning</li>
+                        <li>Routing using Mikrotik</li>
+                        <li>Layer 3 Switching and VLAN Management</li>
+                        <li>Ubiquity WAN Management</li>
+                        <li>Firewall Monitoring (Fortigate)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible hidden">
+                <div class="header">
+                    <h3>Systems and Administration</h3>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="content">
+                    <ul>
+                        <li>Systems Backup Contingency Planning</li>
+                        <li>VMWare Vsphere Environment Management</li>
+                        <li>Active Directory and Exchange Server Administration</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible hidden">
+                <div class="header">
+                    <h3>Media Management</h3>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="content">
+                    <ul>
+                        <li>Adverts, Posters and Banners creation</li>
+                        <li>Digital Signages Adminsitration</li>
+                        <li>Content Creation and Editing</li>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('.collapsible .header').forEach(header => {
+            header.addEventListener('click', function () {
+                const collapsible = this.parentElement;
+                collapsible.classList.toggle('active');
+            });
+        });
+    </script>
+    
+</body>
+</html>
