@@ -1,265 +1,596 @@
-// DOM Elements
-        const navToggle = document.getElementById('nav-toggle');
-        const navMenu = document.getElementById('nav-menu');
-        const backToTop = document.getElementById('back-to-top');
-        const currentYear = document.getElementById('current-year');
+// portfolio.js
 
-        // Initialize the portfolio
-        document.addEventListener('DOMContentLoaded', function() {
-            initializePortfolio();
-            setupEventListeners();
-            setupScrollAnimations();
-            updateCurrentYear();
-        });
-
-        // Initialize portfolio with loaded data
-        function initializePortfolio() {
-            populateHeroSection();
-            populateSkillsSection();
-            populateProjectsSection();
-            populateExperienceSection();
-            populateCertificatesSection();
-            
-            // Start typing animation after a brief delay
-            setTimeout(() => {
-                startTypingAnimation();
-            }, 500);
-        }
-
-        // Populate hero section
-        function populateHeroSection() {
-            const heroTitle = document.getElementById('hero-title');
-            const heroDescription = document.getElementById('hero-description');
-            
-            if (heroTitle) heroTitle.textContent = portfolioData.hero.title;
-            if (heroDescription) heroDescription.textContent = portfolioData.hero.description;
-        }
-
-function startTypingAnimation() {
-    const heroName = document.getElementById('hero-name');
-    const text = portfolioData.hero.name;
-
-    if (!heroName) return;
-
-    heroName.textContent = ''; // Clear current name
-
-    // Split text into individual letters and wrap each in a span
-    const letters = text.split('').map((letter, index) => {
-        if (letter === ' ') {
-            return '<span class="letter space">&nbsp;</span>';
-        }
-        return `<span class="letter" style="animation-delay: ${index * 0.1}s">${letter}</span>`;
-    });
-    
-    heroName.innerHTML = letters.join('');
-    
-    // Add completion class after all letters are animated
+// Initialize the portfolio with data from content.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Hide loader after content is loaded
     setTimeout(() => {
-        heroName.classList.add('typing-complete');
-    }, text.length * 100 + 500);
+        document.querySelector('.loader').classList.add('hidden');
+    }, 1000);
+
+    // Initialize all sections with data
+    initializeNavigation();
+    initializeHome();
+    initializeAbout();
+    initializeExperience();
+    initializeProjects();
+    initializeSkills();
+    initializeAchievements();
+    initializeContact();
+    initializeFooter();
+
+    // Initialize animations and interactions
+    initializeAnimations();
+    initializeCustomCursor();
+    initializeBackToTop();
+    initializeMobileMenu();
+    initializeScrollSpy();
+    initializeTypingAnimation();
+});
+
+// Dynamic Calculations
+function calculateYearsExperience() {
+    const startYear = 2023;
+    const currentYear = new Date().getFullYear();
+    return currentYear - startYear;
 }
 
+function calculateProjectCount() {
+    return window.data.sections.projects.featured_projects.length;
+}
 
-        // Populate skills section
-        function populateSkillsSection() {
-            const skillsContainer = document.getElementById('skills-container');
-            
-            portfolioData.skills.forEach(skillCategory => {
-                const skillElement = document.createElement('div');
-                skillElement.className = 'skill-category fade-in';
-                
-                skillElement.innerHTML = `
-                    <div class="skill-header">
-                        <div class="skill-title">
-                            <i class="${skillCategory.icon} skill-icon"></i>
-                            <span>${skillCategory.category}</span>
-                        </div>
-                        <div class="skill-toggle">
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
+function calculateDegreeCount() {
+    return window.data.sections.experience.education.length;
+}
+
+function calculateCurrentYear() {
+    return new Date().getFullYear();
+}
+
+// Navigation Initialization
+function initializeNavigation() {
+    const navMenu = document.getElementById('navMenu');
+    const navSocial = document.getElementById('navSocial');
+    const menuItems = window.data.site_configuration.navigation.menu_items;
+    
+    // Create navigation links
+    navMenu.innerHTML = menuItems.map(item => 
+        `<a href="#${item.id}" class="nav-link" data-target="${item.id}">${item.label}</a>`
+    ).join('');
+
+    // Create social icons
+    const socialLinks = window.data.sections.home.hero.social_links;
+    navSocial.innerHTML = Object.entries(socialLinks)
+        .filter(([_, data]) => data.show)
+        .map(([platform, data]) => 
+            `<a href="${data.url}" target="_blank" class="social-icon" aria-label="${platform}">
+                <i class="fab fa-${data.icon}"></i>
+            </a>`
+        ).join('');
+}
+
+// Home Section Initialization
+function initializeHome() {
+    const hero = window.data.sections.home.hero;
+    
+    document.getElementById('heroGreeting').textContent = hero.greeting;
+    document.getElementById('heroName').textContent = hero.name;
+    document.getElementById('heroDescription').textContent = hero.short_bio;
+
+    // Create hero titles for typing animation
+    window.heroTitles = hero.titles;
+
+    // Create CTA buttons
+    const heroButtons = document.getElementById('heroButtons');
+    heroButtons.innerHTML = hero.cta_buttons.map(btn => 
+        `<a href="${btn.link}" class="btn ${btn.primary ? 'btn-primary' : 'btn-secondary'}">
+            <span>${btn.text}</span>
+            <i class="fas fa-${btn.primary ? 'arrow-right' : 'paper-plane'}"></i>
+        </a>`
+    ).join('');
+
+    // Create dynamic stats
+    const heroStats = document.getElementById('heroStats');
+    const currentYear = calculateCurrentYear();
+    const yearsExp = calculateYearsExperience();
+    
+    heroStats.innerHTML = `
+        <div class="stat-item">
+            <span class="stat-number">${calculateProjectCount()}+</span>
+            <span class="stat-label">Projects</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">${yearsExp}+</span>
+            <span class="stat-label">Years Exp</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">2025</span>
+            <span class="stat-label">Employee of Year</span>
+        </div>
+    `;
+}
+
+// About Section Initialization
+function initializeAbout() {
+    const about = window.data.sections.about;
+    
+    document.getElementById('aboutSubtitle').textContent = about.subtitle;
+    document.getElementById('aboutTitle').textContent = about.title;
+
+    // Create about text
+    const aboutText = document.getElementById('aboutText');
+    const paragraphs = about.content.bio_paragraphs.map(p => `<p class="about-paragraph">${p}</p>`).join('');
+    
+    const personalInfo = `
+        <div class="personal-info">
+            <div class="info-item">
+                <span class="info-label">Name:</span>
+                <span class="info-value">${about.content.personal_details.name}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Nationality:</span>
+                <span class="info-value">${about.content.personal_details.nationality}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Languages:</span>
+                <span class="info-value">${about.content.personal_details.languages.join(', ')}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Education:</span>
+                <span class="info-value">${about.content.personal_details.education[0]}</span>
+            </div>
+        </div>
+    `;
+
+    const funFacts = `
+        <div class="fun-facts">
+            ${about.content.personal_details.fun_facts.map(fact => 
+                `<div class="fun-fact">
+                    <i class="fas fa-${fact.includes('streaming') ? 'video' : fact.includes('Employee') ? 'trophy' : 'graduation-cap'}"></i>
+                    <span>${fact}</span>
+                </div>`
+            ).join('')}
+        </div>
+    `;
+
+    aboutText.innerHTML = paragraphs + personalInfo + funFacts;
+
+    // Create experience badge with dynamic calculation
+    const yearsExp = calculateYearsExperience();
+    document.getElementById('experienceBadge').innerHTML = `
+        <span class="years">${yearsExp}+</span>
+        <span class="text">Years of<br>Experience</span>
+    `;
+}
+
+// Experience Section Initialization
+function initializeExperience() {
+    const experience = window.data.sections.experience;
+    
+    document.getElementById('experienceSubtitle').textContent = experience.subtitle;
+    document.getElementById('experienceTitle').textContent = experience.title;
+
+    const timeline = document.getElementById('timeline');
+    
+    // Create timeline from employment and education
+    const timelineItems = [
+        ...experience.employment.map(job => ({
+            type: 'work',
+            date: `${job.start_date} - ${job.end_date}`,
+            title: job.position,
+            company: job.company,
+            description: job.description,
+            technologies: job.technologies,
+            icon: 'briefcase'
+        })),
+        ...experience.education.map(edu => ({
+            type: 'education',
+            date: edu.date,
+            title: edu.degree,
+            company: edu.institution,
+            description: edu.description,
+            icon: 'graduation-cap'
+        }))
+    ];
+
+    timeline.innerHTML = timelineItems.map((item, index) => `
+        <div class="timeline-item fade-in" data-position="${index % 2 === 0 ? 'left' : 'right'}">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <div class="timeline-icon">
+                    <i class="fas fa-${item.icon}"></i>
+                </div>
+                <div class="timeline-date">${item.date}</div>
+                <h3 class="timeline-title">${item.title}</h3>
+                <div class="timeline-company">${item.company}</div>
+                <p class="timeline-description">${item.description}</p>
+                ${item.technologies ? `
+                    <div class="timeline-tags">
+                        ${item.technologies.map(tech => `<span>${tech}</span>`).join('')}
                     </div>
-                    <div class="skill-items">
-                        ${skillCategory.items.map(item => `<div class="skill-item">${item}</div>`).join('')}
-                    </div>
-                `;
-                
-                skillsContainer.appendChild(skillElement);
-                
-                // Add click event to toggle skill items
-                const skillHeader = skillElement.querySelector('.skill-header');
-                const skillItems = skillElement.querySelector('.skill-items');
-                const skillToggle = skillElement.querySelector('.skill-toggle i');
-                
-                skillHeader.addEventListener('click', () => {
-                    skillItems.classList.toggle('active');
-                    skillToggle.classList.toggle('fa-chevron-down');
-                    skillToggle.classList.toggle('fa-chevron-up');
-                    
-                    // Add stagger animation to skill items
-                    if (skillItems.classList.contains('active')) {
-                        const items = skillItems.querySelectorAll('.skill-item');
-                        items.forEach((item, index) => {
-                            item.style.animationDelay = `${index * 0.1}s`;
-                            item.classList.add('animate-fade-in');
-                        });
-                    }
-                });
-            });
-        }
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+}
 
-        // Populate projects section
-        function populateProjectsSection() {
-            const projectsContainer = document.getElementById('projects-container');
-            
-            portfolioData.projects.forEach(project => {
-                const projectElement = document.createElement('div');
-                projectElement.className = 'project-card fade-in';
-                
-                projectElement.innerHTML = `
-                    <div class="project-card-inner">
-                        <div class="project-card-front">
-                            <i class="${project.icon} project-icon"></i>
-                            <h3 class="project-title">${project.title}</h3>
+// Projects Section Initialization
+function initializeProjects() {
+    const projects = window.data.sections.projects;
+    
+    document.getElementById('projectsSubtitle').textContent = projects.subtitle;
+    document.getElementById('projectsTitle').textContent = projects.title;
+
+    const projectsGrid = document.getElementById('projectsGrid');
+    
+    projectsGrid.innerHTML = projects.featured_projects.map(project => `
+        <div class="project-card fade-in">
+            <div class="project-card-inner">
+                <div class="project-card-front">
+                    <div class="folder-icon">
+                        <i class="fas fa-folder-open"></i>
+                        <i class="fas fa-${getProjectIcon(project)} folder-overlay"></i>
+                    </div>
+                    <h3 class="project-title">${project.name}</h3>
+                    <p class="project-description">${project.short_description}</p>
+                    <div class="project-tech">
+                        ${project.technologies.slice(0, 3).map(tech => `<span>${tech}</span>`).join('')}
+                    </div>
+                    <div class="project-company">
+                        <i class="fas fa-building"></i> ${project.company}
+                    </div>
+                </div>
+                <div class="project-card-back">
+                    <h4 class="back-title">Key Contributions</h4>
+                    <ul class="back-list">
+                        ${project.contribution.slice(0, 4).map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                    <a href="${project.company_link}" class="project-link">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function getProjectIcon(project) {
+    if (project.name.includes('Newborn')) return 'video';
+    if (project.name.includes('Queue')) return 'users';
+    if (project.name.includes('Token')) return 'key';
+    return 'code';
+}
+
+// Skills Section Initialization
+function initializeSkills() {
+    const skills = window.data.sections.skills;
+    
+    document.getElementById('skillsSubtitle').textContent = skills.subtitle;
+    document.getElementById('skillsTitle').textContent = skills.title;
+
+    const skillsTree = document.getElementById('skillsTree');
+    
+    skillsTree.innerHTML = skills.technical.map(category => `
+        <div class="skill-category fade-in">
+            <div class="skill-header" data-category="${category.category.toLowerCase().replace(/\s+/g, '-')}">
+                <div class="skill-title-wrapper">
+                    <i class="fas fa-${category.icon} skill-icon"></i>
+                    <h3 class="skill-title">${category.category}</h3>
+                </div>
+                <i class="fas fa-chevron-right skill-toggle"></i>
+            </div>
+            <div class="skill-items" id="${category.category.toLowerCase().replace(/\s+/g, '-')}">
+                ${category.skills.map(skill => `
+                    <div class="skill-item">
+                        <span class="skill-name">${skill.name}</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: ${skill.level}%"></div>
                         </div>
-                        <div class="project-card-back">
-                            <h3 class="project-title">${project.title}</h3>
-                            <p class="project-description">${project.description}</p>
-                            <a href="${project.link}" class="project-link">View Project</a>
-                        </div>
+                        <span class="skill-level">${skill.level}%</span>
                     </div>
-                `;
-                
-                projectsContainer.appendChild(projectElement);
-            });
-        }
+                `).join('')}
+            </div>
+        </div>
+    `).join('') + `
+        <div class="skill-category fade-in">
+            <div class="skill-header" data-category="methodologies">
+                <div class="skill-title-wrapper">
+                    <i class="fas fa-diagram-project skill-icon"></i>
+                    <h3 class="skill-title">Methodologies</h3>
+                </div>
+                <i class="fas fa-chevron-right skill-toggle"></i>
+            </div>
+            <div class="skill-items" id="methodologies">
+                <div class="methodology-list">
+                    ${skills.methodologies.flatMap(m => m.skills).map(skill => 
+                        `<span class="methodology-tag">${skill}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        </div>
+    `;
 
-        // Populate experience section
-        function populateExperienceSection() {
-            const timelineContainer = document.getElementById('timeline-container');
+    // Add click handlers for skill categories
+    document.querySelectorAll('.skill-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const items = header.nextElementSibling;
+            const toggle = header.querySelector('.skill-toggle');
             
-            portfolioData.experience.forEach((exp, index) => {
-                const expElement = document.createElement('div');
-                expElement.className = 'timeline-item fade-in';
-                
-                expElement.innerHTML = `
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">${exp.date}</div>
-                        <h3 class="timeline-title">${exp.title}</h3>
-                        <p class="timeline-description">${exp.description}</p>
+            items.classList.toggle('active');
+            toggle.style.transform = items.classList.contains('active') ? 'rotate(90deg)' : 'rotate(0)';
+        });
+    });
+}
+
+// Achievements Section Initialization
+function initializeAchievements() {
+    const achievements = window.data.sections.achievements;
+    
+    document.getElementById('achievementsSubtitle').textContent = achievements.subtitle;
+    document.getElementById('achievementsTitle').textContent = achievements.title;
+
+    const achievementsGrid = document.getElementById('achievementsGrid');
+    
+    achievementsGrid.innerHTML = achievements.awards.map(award => `
+        <div class="achievement-card fade-in">
+            <div class="achievement-icon">
+                <i class="fas fa-${award.icon}"></i>
+            </div>
+            <h3 class="achievement-title">${award.title}</h3>
+            <p class="achievement-org">${award.organization}</p>
+            <p class="achievement-description">${award.description}</p>
+        </div>
+    `).join('') + achievements.certifications.map(cert => `
+        <div class="achievement-card fade-in">
+            <div class="achievement-icon">
+                <i class="fas fa-certificate"></i>
+            </div>
+            <h3 class="achievement-title">${cert.name}</h3>
+            <p class="achievement-org">${cert.issuer}</p>
+            <p class="achievement-description">Graduated in ${cert.date}</p>
+        </div>
+    `).join('');
+
+    // Create dynamic stats
+    const statsContainer = document.getElementById('statsContainer');
+    statsContainer.innerHTML = `
+        <div class="stat-box fade-in">
+            <span class="stat-box-number">${calculateProjectCount()}</span>
+            <span class="stat-box-label">Major Projects</span>
+        </div>
+        <div class="stat-box fade-in">
+            <span class="stat-box-number">${calculateYearsExperience()}+</span>
+            <span class="stat-box-label">Years Experience</span>
+        </div>
+        <div class="stat-box fade-in">
+            <span class="stat-box-number">${calculateDegreeCount()}</span>
+            <span class="stat-box-label">Degrees</span>
+        </div>
+    `;
+}
+
+// Contact Section Initialization
+function initializeContact() {
+    const contact = window.data.sections.contact;
+    
+    document.getElementById('contactSubtitle').textContent = contact.subtitle;
+    document.getElementById('contactTitle').textContent = contact.title;
+    document.getElementById('contactDescription').textContent = contact.description;
+
+    // Create contact methods
+    const contactMethods = document.getElementById('contactMethods');
+    contactMethods.innerHTML = contact.contact_methods.map(method => `
+        <a href="${method.url}${method.value}" class="contact-method" ${method.type !== 'email' ? 'target="_blank"' : ''}>
+            <i class="fas ${method.type === 'email' ? 'fa-envelope' : `fa-brands fa-${method.icon}`}"></i>
+            <span>${method.label}</span>
+        </a>
+    `).join('');
+
+    // Create contact form
+    const contactFormContainer = document.getElementById('contactFormContainer');
+    if (contact.contact_form.enabled) {
+        contactFormContainer.innerHTML = `
+            <form id="contactForm" class="contact-form">
+                ${contact.contact_form.fields.map(field => `
+                    <div class="form-group">
+                        ${field.type === 'textarea' 
+                            ? `<textarea id="${field.name}" name="${field.name}" placeholder="${field.placeholder}" ${field.required ? 'required' : ''} rows="${field.rows}"></textarea>`
+                            : `<input type="${field.type}" id="${field.name}" name="${field.name}" placeholder="${field.placeholder}" ${field.required ? 'required' : ''}>`
+                        }
+                        <label for="${field.name}">${field.placeholder}</label>
                     </div>
-                `;
+                `).join('')}
+                <button type="submit" class="btn btn-primary submit-btn">
+                    <span>${contact.contact_form.submit_text}</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        `;
+
+        // Add form submit handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert(contact.contact_form.success_message);
+            this.reset();
+        });
+    }
+}
+
+// Footer Initialization
+function initializeFooter() {
+    const footer = window.data.footer;
+    const currentYear = calculateCurrentYear();
+    const launchYear = window.data.site_configuration.launch_year;
+    
+    const footerText = document.getElementById('footerText');
+    footerText.innerHTML = `
+        <p>&copy; ${currentYear} Jessica Hakmeh. All rights reserved.</p>
+        <p class="built-with">${footer.built_with.replace('HTML, CSS, JavaScript', '<i class="fas fa-heart"></i> HTML, CSS, JavaScript')}</p>
+    `;
+
+    const footerSocial = document.getElementById('footerSocial');
+    footerSocial.innerHTML = footer.social_links.map(link => `
+        <a href="#" target="_blank" aria-label="${link.platform}">
+            <i class="fab fa-${link.icon}"></i>
+        </a>
+    `).join('');
+}
+
+// Animation Functions
+function initializeAnimations() {
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
                 
-                timelineContainer.appendChild(expElement);
-            });
-        }
-
-        // Populate certificates section
-        function populateCertificatesSection() {
-            const certificatesContainer = document.getElementById('certificates-container');
-            
-            portfolioData.certificates.forEach(cert => {
-                const certElement = document.createElement('div');
-                certElement.className = 'certificate-card fade-in';
-                
-                certElement.innerHTML = `
-                    <h3 class="certificate-title">${cert.title}</h3>
-                    <p class="certificate-org">${cert.organization}</p>
-                    <a href="${cert.link}" class="certificate-link">View Certificate</a>
-                `;
-                
-                certificatesContainer.appendChild(certElement);
-            });
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Mobile navigation toggle
-            navToggle.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                navToggle.classList.toggle('active');
-            });
-
-            // Close mobile menu when clicking a link
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', () => {
-                    navMenu.classList.remove('active');
-                    navToggle.classList.remove('active');
-                });
-            });
-
-            // Back to top button
-            backToTop.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        }
-
-        // Setup scroll animations
-        function setupScrollAnimations() {
-            // Header scroll effect
-            const navbar = document.getElementById('navbar');
-            
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
+                // Special handling for timeline items
+                if (entry.target.classList.contains('timeline-item')) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                    }, 100);
                 }
-                
-                // Show/hide back to top button
-                if (window.scrollY > 300) {
-                    backToTop.classList.add('show');
-                } else {
-                    backToTop.classList.remove('show');
-                }
-                
-                // Animate elements on scroll
-                animateOnScroll();
-            });
-            
-            // Initial check for elements in view
-            animateOnScroll();
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 100,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        }
-
-        // Animate elements when they come into view
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.fade-in');
-            
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementBottom = element.getBoundingClientRect().bottom;
-                const isVisible = (elementTop < window.innerHeight - 100) && (elementBottom > 0);
-                
-                if (isVisible) {
-                    element.classList.add('animate');
-                }
-            });
-        }
-
-        // Update current year in footer
-        function updateCurrentYear() {
-            if (currentYear) {
-                currentYear.textContent = new Date().getFullYear();
             }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    fadeElements.forEach(element => observer.observe(element));
+}
+
+function initializeCustomCursor() {
+    const cursor = document.querySelector('.cursor');
+    const follower = document.querySelector('.cursor-follower');
+    
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        follower.style.left = e.clientX + 'px';
+        follower.style.top = e.clientY + 'px';
+    });
+
+    document.addEventListener('mouseenter', () => {
+        cursor.style.opacity = '1';
+        follower.style.opacity = '1';
+    });
+
+    document.addEventListener('mouseleave', () => {
+        cursor.style.opacity = '0';
+        follower.style.opacity = '0';
+    });
+
+    // Hover effect for clickable elements
+    const clickables = document.querySelectorAll('a, button, .skill-category, .project-card');
+    clickables.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            follower.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+            follower.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+    });
+}
+
+function initializeBackToTop() {
+    const backToTop = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+            backToTop.classList.add('show');
+        } else {
+            backToTop.classList.remove('show');
         }
+    });
+
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+function initializeMobileMenu() {
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
+    });
+
+    // Close menu when clicking a link
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+        });
+    });
+}
+
+function initializeScrollSpy() {
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            
+            if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === current) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
+
+function initializeTypingAnimation() {
+    const heroTitle = document.getElementById('heroTitle');
+    const cursor = document.getElementById('typingCursor');
+    let titleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typeEffect() {
+        const currentTitle = window.heroTitles[titleIndex];
+        
+        if (isDeleting) {
+            heroTitle.textContent = currentTitle.substring(0, charIndex - 1);
+            charIndex--;
+        } else {
+            heroTitle.textContent = currentTitle.substring(0, charIndex + 1);
+            charIndex++;
+        }
+
+        if (!isDeleting && charIndex === currentTitle.length) {
+            isDeleting = true;
+            setTimeout(typeEffect, 2000);
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            titleIndex = (titleIndex + 1) % window.heroTitles.length;
+            setTimeout(typeEffect, 500);
+        } else {
+            setTimeout(typeEffect, isDeleting ? 50 : 100);
+        }
+    }
+
+    setTimeout(typeEffect, 2000);
+}
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
