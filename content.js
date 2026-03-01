@@ -374,17 +374,17 @@ window.data = {
         {
           "type": "email",
           "value": "",
-          "label": "jessica@gmail.com",
+          "label": "jessicahakmeh@gmail.com",
           "icon": "envelope",
-          "url": "mailto:",
+          "url": "mailto:jessicahakmeh@gmail.com",
           "primary": true
         },
         {
           "type": "whatsapp",
           "value": "",
-          "label": "+961 XX XXX XXX",
+          "label": "+961 71 709 907",
           "icon": "whatsapp",
-          "url": "https://wa.me/",
+          "url": "https://wa.me/96171709907",
           "primary": true
         },
         {
@@ -419,4 +419,5 @@ window.data = {
     ],
     "back_to_top": true
   }
+
 };
