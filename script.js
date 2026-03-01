@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeAbout();
     initializeExperience();
     initializeProjects();
+    initializeProjectModal();
     initializeSkills();
     initializeAchievements();
     initializeContact();
@@ -223,7 +224,7 @@ function initializeProjects() {
     const projectsGrid = document.getElementById('projectsGrid');
     
     projectsGrid.innerHTML = projects.featured_projects.map(project => `
-        <div class="project-card fade-in">
+        <div class="project-card fade-in" data-id="${project.id}">
             <div class="project-card-inner">
                 <div class="project-card-front">
                     <div class="folder-icon">
@@ -236,7 +237,7 @@ function initializeProjects() {
                         ${project.technologies.slice(0, 3).map(tech => `<span>${tech}</span>`).join('')}
                     </div>
                     <div class="project-company">
-                        <i class="fas fa-building"></i> ${project.company}
+                        <i class="fas fa-building"></i> ${project.company || ''}
                     </div>
                 </div>
                 <div class="project-card-back">
@@ -244,9 +245,7 @@ function initializeProjects() {
                     <ul class="back-list">
                         ${project.contribution.slice(0, 4).map(item => `<li>${item}</li>`).join('')}
                     </ul>
-                    <a href="${project.company_link}" class="project-link">
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
+                    <button class="project-more" data-id="${project.id}">Check more</button>
                 </div>
             </div>
         </div>
@@ -258,6 +257,40 @@ function getProjectIcon(project) {
     if (project.name.includes('Queue')) return 'users';
     if (project.name.includes('Token')) return 'key';
     return 'code';
+}
+
+
+
+// Projects Modal Initialization
+function initializeProjectModal() {
+    const modal = document.getElementById('projectModal');
+    const modalBody = document.getElementById('modalBody');
+    const closeBtn = document.querySelector('.modal-close');
+
+    // delegate clicks
+    document.body.addEventListener('click', function(e) {
+        if (e.target.classList.contains('project-more')) {
+            const id = e.target.dataset.id;
+            const project = window.data.sections.projects.featured_projects.find(p => p.id === id);
+            if (project) {
+                // build modal content
+                modalBody.innerHTML = `
+                    <h2>${project.name}</h2>
+                    <p>${project.full_description}</p>
+                    <h4>Features</h4>
+                    <ul>${project.features.map(f => `<li>${f}</li>`).join('')}</ul>
+                    <h4>Challenges</h4>
+                    <ul>${project.challenges.map(c => `<li><strong>${c.problem}</strong>: ${c.solution}</li>`).join('')}</ul>
+                `;
+                modal.classList.remove('hidden');
+            }
+        }
+
+        // close interactions
+        if (e.target === modal || e.target === closeBtn) {
+            modal.classList.add('hidden');
+        }
+    });
 }
 
 // Skills Section Initialization

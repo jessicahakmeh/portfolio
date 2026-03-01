@@ -25,7 +25,7 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#home" class="nav-logo">
-                <span class="logo-text">J<span class="accent">H</span></span>
+                <span class="logo-text"><span class="accent">JH</span></span>
                 <div class="logo-dot"></div>
             </a>
             
@@ -59,7 +59,6 @@
             <div class="container hero-container">
                 <div class="hero-content">
                     <div class="hero-greeting">
-                        <span class="greeting-line"></span>
                         <span class="greeting-text" id="heroGreeting"></span>
                     </div>
                     
@@ -70,7 +69,7 @@
 
                     <div class="hero-title-wrapper">
                         <h2 class="hero-title" id="heroTitle"></h2>
-                        <span class="typing-cursor" id="typingCursor">|</span>
+                        <span class="typing-cursor" id="typingCursor"></span>
                     </div>
 
                     <p class="hero-description" id="heroDescription"></p>
@@ -189,6 +188,14 @@
             </div>
         </section>
     </main>
+
+    <!-- Project details modal -->
+    <div id="projectModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">

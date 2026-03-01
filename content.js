@@ -2,7 +2,7 @@ window.data = {
   "site_configuration": {
     "site_title": "Jessica Hakmeh",
     "site_url": "",
-    "launch_year": 2023,
+    "launch_year": 2026,
     "current_year_dynamic": true,
     "theme": {
       "colors": {
@@ -73,8 +73,8 @@ window.data = {
       "content": {
         "bio_paragraphs": [
           "I'm a Digital Transformation Specialist with a Master's degree in Management Information Systems from Lebanese University (2025). I'm passionate about leveraging technology to solve real-world problems, particularly in healthcare settings.",
-          "At SLH, I've developed three major systems that have streamlined hospital operations—from a newborn virtual visit portal to an outpatient queue system that minimizes patient wait times. My approach combines thorough system analysis with hands-on full-stack development.",
-          "I was recognized as Employee of the Year in 2025 for my contributions to digital transformation initiatives. I believe in creating solutions that are not just technically sound but also intuitive for end-users."
+          "My approach combines thorough system analysis with hands-on full-stack development.",
+          "I was recognized as Employee of the Year in 2025 for creating solutions that optimize workflows."
         ],
         "personal_details": {
           "name": "Jessica Hakmeh",
@@ -85,9 +85,9 @@ window.data = {
             "Bachelor's in MIS - Lebanese University (2023)"
           ],
           "fun_facts": [
-            "Built a live newborn streaming portal",
-            "Employee of the Year 2025",
-            "Master's degree at 23"
+            "Built a secure streaming portal",
+            "Seeking PMP certificate elligibility and partaking",
+            "Obtained a Master's degree at 23"
           ]
         },
         "image": ""
@@ -257,7 +257,42 @@ window.data = {
           "outcome": "Eliminated duplicate data entries and improved data accuracy.",
           "role": "Lead Developer",
           "tags": ["Python", "forms", "data integrity", "tokens"]
-        }
+        },
+        {
+          "id": "CRM-centralization-implementation",
+          "name": "Full CRM Implementation & Centralization",
+          "short_description": "Customer Relationship Management Adoption",
+          "full_description": "Implemented a comprehensive CRM solution across multiple sister companies to unify client databases, automate lead management, and enhance marketing efforts.",
+          "company": "AnglesDiffering Holding",
+          "company_link": "#experience",
+          "goal": "increase leads, categorize them properly and unify client database across multiple companies",
+          "category": "Architecture",
+          "featured": true,
+          "cover_image": "",
+          "gallery": [],
+          "features": [
+            "Automated Chatbot in Website",
+            "Communication Channels Merging",
+            "Lead categorization",
+            "Forms and calendars setup, linked to the CRM",
+            "marketing campaigns automation and targeting"
+          ],
+          "contribution": [
+            "Need assessment",
+            "workflow creation",
+            "implementation"
+          ],
+          "technologies": ["Zoho One", "Zoho CRM"],
+          "challenges": [
+            {
+              "problem": "lack of targeted communication with potential leads",
+              "solution": "Implemented an over the shelf CRM solution, and linked it across all the sister companies"
+            }
+          ],
+          "outcome": "Successfully deployed in 5 websites and linked to companies' social media accounts.",
+          "role": "Lead Developer",
+          "tags": ["CRM", "digital transformation", "automation", "chatbot"]
+        },
       ],
       "other_projects": []
     },
