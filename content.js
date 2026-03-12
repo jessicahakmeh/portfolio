@@ -52,7 +52,7 @@ window.data = {
         "name": "Jessica Hakmeh",
         "titles": ["Digital Transformation Specialist", "MIS Graduate", "Healthcare IT Innovator"],
         "typing_animation": true,
-        "short_bio": "I transform healthcare workflows through innovative technology solutions.",
+        "short_bio": "I transform workflows through innovative technology solutions.",
         "cta_buttons": [
           { "text": "View Projects", "link": "#projects", "primary": true },
           { "text": "Contact Me", "link": "#contact", "primary": false }
@@ -90,7 +90,7 @@ window.data = {
             "Obtained a Master's degree at 23"
           ]
         },
-        "image": ""
+        "image": "profile.jpg"
       }
     },
     "experience": {
@@ -139,163 +139,384 @@ window.data = {
       ]
     },
     "projects": {
-      "title": "Projects",
-      "subtitle": "What I've built",
-      "featured_projects": [
-        {
-          "id": "newborn-virtual-visit",
-          "name": "Newborn Virtual Visit Portal",
-          "short_description": "Live streaming for hospital nurseries",
-          "full_description": "A secure portal that streams baby cribs in the nursery via public links valid for 24 hours, allowing families to virtually visit their newborns.",
-          "company": "SLH",
-          "company_link": "#experience",
-          "goal": "offer virtual visit services for newborn babies",
-          "category": "Healthcare",
-          "featured": true,
-          "cover_image": "",
-          "gallery": [],
-          "features": [
-            "Live video streaming over web interface",
-            "Comment functionality for family members",
-            "Token-based access system (24-hour validity)",
-            "Secure streaming with Fortigate Firewall"
-          ],
-          "contribution": [
-            "system analysis and engineering",
-            "full development"
-          ],
-          "technologies": ["PHP", "FFMPEG", "Fortigate Firewall"],
-          "challenges": [
-            {
-              "problem": "Ensuring secure streaming while maintaining accessibility for family members",
-              "solution": "Implemented token-based authentication with 24-hour expiry and firewall protection"
-            },
-            {
-              "problem": "Real-time streaming with hospital network constraints",
-              "solution": "Optimized FFMPEG settings for bandwidth efficiency"
-            }
-          ],
-          "outcome": "Successfully deployed in hospital nursery, enabling hundreds of virtual visits for families unable to visit in person.",
-          "role": "Lead Developer",
-          "tags": ["streaming", "healthcare", "PHP", "security"]
-        },
-        {
-          "id": "outpatient-queue-system",
-          "name": "Outpatient Workflow Queue System",
-          "short_description": "Patient wait time optimization",
-          "full_description": "A custom queue management system tailored to the hospital's exact workflow, designed to minimize patient wait times and streamline outpatient operations.",
-          "company": "SLH",
-          "company_link": "#experience",
-          "goal": "structure the outpatient workflow to minimize patient wait times",
-          "category": "Healthcare",
-          "featured": true,
-          "cover_image": "",
-          "gallery": [],
-          "features": [
-            "Custom workflow engine matching hospital processes",
-            "Real-time queue tracking",
-            "Patient wait time analytics",
-            "Staff performance dashboard"
-          ],
-          "contribution": [
-            "system analysis and engineering",
-            "requirements gathering",
-            "workflow design",
-            "full development",
-            "testing",
-            "user training",
-            "system deployment",
-            "R&D"
-          ],
-          "technologies": ["PHP", "MySQL"],
-          "challenges": [
-            {
-              "problem": "Complex hospital workflow with multiple departments and exceptions",
-              "solution": "Spent 2 months shadowing staff to map exact workflows before development"
-            },
-            {
-              "problem": "Staff resistance to new system",
-              "solution": "Comprehensive training program and involved staff in testing phase"
-            }
-          ],
-          "outcome": "Reduced average patient wait time and improved staff efficiency.",
-          "role": "Full-Stack Developer & Business Analyst",
-          "tags": ["queue management", "workflow", "PHP", "MySQL"]
-        },
-        {
-          "id": "token-form-system",
-          "name": "Token-Based Form Submission System",
-          "short_description": "Duplicate-free data collection",
-          "full_description": "A token-based system that generates unique links with redirection to either forms or blocking pages, ensuring accurate form submission without duplicate or false data.",
-          "company": "SLH",
-          "company_link": "#experience",
-          "goal": "enable accurate form submission without duplicated data or false data",
-          "category": "Data Management",
-          "featured": true,
-          "cover_image": "",
-          "gallery": [],
-          "features": [
-            "Unique token generation for each submission",
-            "Smart redirection based on token validity",
-            "Integration with tally.so forms",
-            "Webhook-based data validation"
-          ],
-          "contribution": [
-            "system analysis and engineering",
-            "requirements gathering",
-            "integration",
-            "full development",
-            "testing"
-          ],
-          "technologies": ["Python", "tally.so", "webhook"],
-          "challenges": [
-            {
-              "problem": "Preventing multiple form submissions from same patient",
-              "solution": "Implemented token expiry and usage tracking"
-            }
-          ],
-          "outcome": "Eliminated duplicate data entries and improved data accuracy.",
-          "role": "Lead Developer",
-          "tags": ["Python", "forms", "data integrity", "tokens"]
-        },
-        {
-          "id": "CRM-centralization-implementation",
-          "name": "Full CRM Implementation & Centralization",
-          "short_description": "Customer Relationship Management Adoption",
-          "full_description": "Implemented a comprehensive CRM solution across multiple sister companies to unify client databases, automate lead management, and enhance marketing efforts.",
-          "company": "AnglesDiffering Holding",
-          "company_link": "#experience",
-          "goal": "increase leads, categorize them properly and unify client database across multiple companies",
-          "category": "Architecture",
-          "featured": true,
-          "cover_image": "",
-          "gallery": [],
-          "features": [
-            "Automated Chatbot in Website",
-            "Communication Channels Merging",
-            "Lead categorization",
-            "Forms and calendars setup, linked to the CRM",
-            "marketing campaigns automation and targeting"
-          ],
-          "contribution": [
-            "Need assessment",
-            "workflow creation",
-            "implementation"
-          ],
-          "technologies": ["Zoho One", "Zoho CRM"],
-          "challenges": [
-            {
-              "problem": "lack of targeted communication with potential leads",
-              "solution": "Implemented an over the shelf CRM solution, and linked it across all the sister companies"
-            }
-          ],
-          "outcome": "Successfully deployed in 5 websites and linked to companies' social media accounts.",
-          "role": "Lead Developer",
-          "tags": ["CRM", "digital transformation", "automation", "chatbot"]
-        },
+  "title": "Projects",
+  "subtitle": "What I've built",
+  "featured_projects": [
+    {
+      "id": "outpatient-queue-system",
+      "name": "Paperless Outpatient Workflow & Queue Management",
+      "short_description": "Digitization of outpatient workflow and queue tracking.",
+      "full_description": "A custom system designed to digitize and streamline the hospital outpatient workflow, replacing paper-based coordination with a real-time queue and workflow management platform.",
+      "company": "Saint Louis Hospital",
+      "category": "Healthcare Systems",
+      "year": "2026",
+      "featured": true,
+      "role": "Systems Analyst, Lead Developer & QA Secialist",
+      "context": "Outpatient workflow relied heavily on paper forms and manual coordination between reception, nurses, and physicians.",
+      "problem": [
+        "Unpredictable patient wait times",
+        "Manual paperwork slowing staff operations",
+        "Lack of real-time visibility on patient flow and journey"
       ],
-      "other_projects": []
+      "constraints": [
+        "Minimal disruption to daily operations during deployment",
+        "Staff with varying technical proficiency",
+        "Transparency and time tracking"
+      ],
+      "approach": "Redesigned the entire outpatient workflow after mapping and studying staff operations to design a customized digital and fully paperless system replicating the real-world process.",
+      "architecture": [
+        "Web interface for staff",
+        "Queue management engine",
+        "Database tracking visit flow",
+        "Analytics dashboard",
+        "Documents Management System"
+      ],
+      "workflow": [
+        "Patient arrival",
+        "Visit registration",
+        "Queue assignment",
+        "Billing Approval",
+        "Triage to department(s)",
+        "Department service",
+        "Checkout"
+      ],
+      "features": [
+        "Real-time queue monitoring",
+        "Workflow stage tracking",
+        "Operational analytics",
+        "Role-based access"
+      ],
+      "contribution": [
+        "Workflow analysis and enhancement",
+        "System architecture design",
+        "Full-stack development",
+        "Testing and deployment",
+        "Staff training"
+      ],
+      "technologies": ["PHP", "MySQL", "JavaScript", "HTML/CSS"],
+      "challenges": [
+        {
+          "problem": "Resistance to digital transition from staff accustomed to paper workflows",
+          "solution": "Conducted hands-on training sessions, multiple drill sessions and designed intuitive interface mirroring familiar paper forms"
+        },
+        {
+          "problem": "Ensuring system reliability during peak outpatient hours",
+          "solution": "Implemented robust error handling and fallback procedures with real-time data synchronization"
+        }
+      ],
+      "impact": [
+        "Reduced patient wait times",
+        "Improved coordination between departments",
+        "Enabled monitoring of operational bottlenecks",
+        "Reduced paper usage and associated costs",
+        "Enabled real time data access from different departments to same patients' information"
+      ],
+      "lessons_learned": "Direct observation of existing workflows before designing solutions leads to better adoption and more effective systems.",
+      "tags": ["workflow", "healthcare", "queue system", "PHP", "digital transformation"],
+      "media": {
+        "cover_image": "",
+        "gallery": [],
+        "diagrams": [],
+        "demo_video": null
+      }
     },
+    {
+      "id": "patient-search-engine",
+      "name": "Patient Identity Search & Name Standardization Engine",
+      "short_description": "Smart patient lookup system preventing duplicate MRNs.",
+      "full_description": "A sophisticated search engine capable of interpreting variations in patient name spelling across languages, preventing duplicate medical records and improving lookup accuracy.",
+      "company": "Saint Louis Hospital",
+      "category": "Healthcare Data",
+      "year": "2026",
+      "featured": true,
+      "role": "Systems Designer & Developer",
+      "context": "Patient names were often entered inconsistently due to language differences and manual typing.",
+      "problem": [
+        "Duplicate medical record numbers",
+        "Difficulty finding patients in the system",
+        "Inconsistent spelling across languages"
+      ],
+      "constraints": [
+        "Large existing database with legacy data",
+        "Multiple languages and naming conventions",
+        "Real-time lookup requirements"
+      ],
+      "approach": "Developed a search engine capable of interpreting variations in spelling and identifying potential duplicate records using phonetic algorithms and fuzzy matching.",
+      "architecture": [
+        "Search index layer",
+        "Phonetic transformation engine",
+        "Duplicate detection algorithm",
+        "Admin review interface"
+      ],
+      "workflow": [
+        "Name input",
+        "Phonetic normalization",
+        "Database query",
+        "Result ranking"
+      ],
+      "features": [
+        "Name normalization logic",
+        "Phonetic search variations",
+        "Eligibility flagging for employee benefits",
+        "Flagging tests with multiple items to bill"
+      ],
+      "contribution": [
+        "Algorithm design",
+        "Database optimization",
+        "Search logic implementation",
+        "Testing with real patient data"
+      ],
+      "technologies": ["static HTML/CSS", "Python", "JavaScript"],
+      "challenges": [
+        {
+          "problem": "Balancing search sensitivity vs. performance with large dataset",
+          "solution": "Implemented cached values and optimized query indexing"
+        },
+        {
+          "problem": "Handling multilingual name variations",
+          "solution": "Developed custom normalization rules for common local name patterns"
+        }
+      ],
+      "impact": [
+        "Reduced patients with duplicate records",
+        "Improved patient lookup speed",
+        "Better data quality"
+      ],
+      "lessons_learned": "Simple fuzzy matching isn't enough; lookup needs to be organized.",
+      "tags": ["data quality", "search engine", "healthcare", "PHP", "MySQL", "algorithms"],
+      "media": {
+        "cover_image": "",
+        "gallery": [],
+        "diagrams": [],
+        "demo_video": null
+      }
+    },
+    {
+      "id": "newborn-virtual-visit",
+      "name": "Newborn Virtual Visit Portal",
+      "short_description": "Live streaming for hospital nurseries",
+      "full_description": "A secure portal that streams baby cribs in the nursery via public links valid for 24 hours, allowing families to virtually visit their newborns.",
+      "company": "Saint Louis Hospital",
+      "category": "Healthcare",
+      "year": "2025",
+      "featured": true,
+      "role": "Lead Developer",
+      "context": "Families unable to visit the hospital nursery in person needed a way to see their newborns remotely, especially during visiting restrictions.",
+      "problem": [
+        "Families unable to visit nursery in person",
+        "Security concerns with public streaming",
+        "Need for simple access without complex login"
+      ],
+      "constraints": [
+        "Hospital network security policies",
+        "Bandwidth limitations",
+        "24/7 reliability requirement"
+      ],
+      "approach": "Created a token-based secure streaming system with time-limited access, balancing security with ease of use for family members.",
+      "architecture": [
+        "Streaming server with FFMPEG",
+        "Token generation service",
+        "Web interface",
+        "Fortigate Firewall security layer"
+      ],
+      "workflow": [
+        "Camera setup in nursery",
+        "Token generation for newborn",
+        "Link distribution to family",
+        "24-hour access window",
+        "Live streaming with comments"
+      ],
+      "features": [
+        "Live video streaming over web interface",
+        "Comment functionality for family members",
+        "Token-based access system (24-hour validity)",
+        "Secure streaming with Fortigate Firewall"
+      ],
+      "contribution": [
+        "System analysis and engineering",
+        "Full development",
+        "Security configuration",
+        "Deployment and testing"
+      ],
+      "technologies": ["PHP", "FFMPEG", "Fortigate Firewall", "JavaScript", "HTML5"],
+      "challenges": [
+        {
+          "problem": "Ensuring secure streaming while maintaining accessibility for family members",
+          "solution": "Implemented token-based authentication with 24-hour expiry and firewall protection"
+        },
+        {
+          "problem": "Real-time streaming with hospital network constraints",
+          "solution": "Optimized FFMPEG settings for bandwidth efficiency and implemented adaptive bitrate streaming"
+        }
+      ],
+      "impact": [
+        "Successfully deployed in hospital nursery",
+        "Enabled hundreds of virtual visits",
+        "Positive feedback from families unable to visit in person"
+      ],
+      "lessons_learned": "Security and usability can coexist with thoughtful design; token-based systems provide both protection and simplicity for end users.",
+      "tags": ["streaming", "healthcare", "PHP", "security", "FFMPEG", "video"],
+      "media": {
+        "cover_image": "",
+        "gallery": [],
+        "diagrams": [],
+        "demo_video": null
+      }
+    },
+    {
+      "id": "secure-feedback-system",
+      "name": "Token-Based Patient Feedback System",
+      "short_description": "Secure one-time feedback links for patients.",
+      "full_description": "A token-based feedback system that generates unique, single-use URLs for patients to submit feedback, eliminating duplicate submissions and ensuring data reliability.",
+      "company": "Saint Louis Hospital",
+      "category": "Automation",
+      "year": "2024",
+      "featured": false,
+      "role": "System engineer & Lead Developer",
+      "context": "Patient feedback collection lacked validation mechanisms, leading to unreliable data from multiple submissions.",
+      "problem": [
+        "Feedback forms could be submitted multiple times",
+        "No validation for patient identity"
+      ],
+      "constraints": [
+        "Integration with existing feedback platform (Tally.so)",
+        "Automated distribution without manual intervention",
+        "Simple patient experience"
+      ],
+      "approach": "Created a token-based link system where each patient receives a unique URL valid for one submission, integrated with hospital's discharge workflow.",
+      "architecture": [
+        "Token generation service",
+        "Database for token tracking",
+        "Webhook handler",
+        "Integration layer with Tally.so"
+      ],
+      "workflow": [
+        "Patient discharge trigger",
+        "Unique token generation",
+        "Email/SMS distribution",
+        "Form access validation",
+        "Submission tracking",
+        "Token invalidation"
+      ],
+      "features": [
+        "Unique token generation",
+        "Single-use submission validation",
+        "Webhook integration",
+        "Automated link distribution",
+        "Integration with Queue System"
+      ],
+      "contribution": [
+        "System architecture",
+        "Token service development",
+        "Webhook implementation",
+        "Integration testing"
+      ],
+      "technologies": ["Python", "Webhook", "Tally.so", "SMTP", "SMS API"],
+      "challenges": [
+        {
+          "problem": "Ensuring tokens cannot be guessed or brute-forced",
+          "solution": "Implemented cryptographically secure random tokens with sufficient entropy"
+        },
+        {
+          "problem": "Real-time validation without impacting user experience",
+          "solution": "Asynchronous validation with cached token status for quick verification"
+        }
+      ],
+      "impact": [
+        "Improved feedback data reliability",
+        "Eliminated duplicate submissions",
+        "Automated previously manual distribution process"
+      ],
+      "lessons_learned": "Simple token-based validation can significantly improve data quality without adding friction to the user experience.",
+      "tags": ["Python", "automation", "feedback", "tokens", "webhook", "Tally.so"],
+      "media": {
+        "cover_image": "",
+        "gallery": [],
+        "diagrams": [],
+        "demo_video": null
+      }
+    },
+    {
+      "id": "crm-digital-transformation",
+      "name": "Multi-Company CRM Implementation",
+      "short_description": "Centralized CRM and marketing automation.",
+      "full_description": "A comprehensive Zoho One CRM implementation across multiple companies, centralizing lead management, automating marketing campaigns, and integrating communication channels.",
+      "company": "AnglesDiffering Holding",
+      "category": "CRM",
+      "year": "2025",
+      "featured": true,
+      "role": "CRM Implementation Consultant",
+      "context": "Lead and client data was scattered across different platforms with no centralized view or automated follow-up processes.",
+      "problem": [
+        "Leads scattered across different platforms",
+        "No centralized client database",
+        "Inefficient manual follow-up",
+        "Inconsistent customer communication"
+      ],
+      "constraints": [
+        "Multiple companies with different data needs",
+        "Existing customer data to migrate",
+        "Budget limitations",
+        "Staff training requirements"
+      ],
+      "approach": "Implemented Zoho One CRM and integrated it across multiple company websites and communication channels with customized modules for each business unit.",
+      "architecture": [
+        "Zoho One platform",
+        "CRM modules per company",
+        "Website form integrations",
+        "Chatbot automation",
+        "Email marketing campaigns"
+      ],
+      "workflow": [
+        "Lead capture from websites/chat",
+        "Automated categorization",
+        "Assignment to sales team",
+        "Nurturing campaigns",
+        "Conversion tracking",
+        "Analytics reporting"
+      ],
+      "features": [
+        "Lead categorization",
+        "Automated chatbot",
+        "Integrated website forms",
+        "Marketing campaign automation",
+        "Centralized client database"
+      ],
+      "contribution": [
+        "Requirements gathering",
+        "CRM configuration",
+        "Data migration",
+        "Integration development",
+        "Team training"
+      ],
+      "technologies": ["Zoho One", "Zoho CRM", "Zoho Campaigns", "Chatbot API", "Web forms"],
+      "challenges": [
+        {
+          "problem": "Migrating legacy data from disparate sources without loss",
+          "solution": "Developed custom data cleaning and migration scripts with validation steps"
+        },
+        {
+          "problem": "Different business processes across companies",
+          "solution": "Created modular CRM structure with company-specific fields and workflows while maintaining unified reporting"
+        }
+      ],
+      "impact": [
+        "Centralized client database across all companies",
+        "Improved lead management and tracking",
+        "Automated marketing outreach",
+        "Better visibility into sales pipeline"
+      ],
+      "lessons_learned": "Successful CRM implementation is 30% technology and 70% process alignment and user adoption.",
+      "tags": ["CRM", "Zoho", "automation", "marketing", "integration", "digital transformation"],
+      "media": {
+        "cover_image": "",
+        "gallery": [],
+        "diagrams": [],
+        "demo_video": null
+      }
+    }
+  ]
+ },
     "skills": {
       "title": "Skills",
       "subtitle": "What I bring to the table",
@@ -373,7 +594,6 @@ window.data = {
       "contact_methods": [
         {
           "type": "email",
-          "value": "",
           "label": "jessicahakmeh@gmail.com",
           "icon": "envelope",
           "url": "mailto:jessicahakmeh@gmail.com",
@@ -381,7 +601,6 @@ window.data = {
         },
         {
           "type": "whatsapp",
-          "value": "",
           "label": "+961 71 709 907",
           "icon": "whatsapp",
           "url": "https://wa.me/96171709907",
@@ -389,33 +608,21 @@ window.data = {
         },
         {
           "type": "linkedin",
-          "value": "",
           "label": "linkedin.com/in/jessicahakmeh",
           "icon": "linkedin",
-          "url": "",
+          "url": "https://linkedin.com/in/jessicahakmeh",
           "primary": false
         }
       ],
-      "contact_form": {
-        "enabled": true,
-        "fields": [
-          { "name": "name", "type": "text", "placeholder": "Your Name", "required": true },
-          { "name": "email", "type": "email", "placeholder": "Your Email", "required": true },
-          { "name": "subject", "type": "text", "placeholder": "Subject", "required": false },
-          { "name": "message", "type": "textarea", "placeholder": "Your Message", "required": true, "rows": 5 }
-        ],
-        "submit_text": "Send Message",
-        "success_message": "Thanks for reaching out! I'll get back to you soon."
-      },
       "availability": "Open to opportunities"
     }
   },
   "footer": {
     "built_with": "Built with HTML, CSS, JavaScript",
     "social_links": [
-      { "platform": "LinkedIn", "icon": "linkedin" },
-      { "platform": "WhatsApp", "icon": "whatsapp" },
-      { "platform": "Email", "icon": "envelope" }
+      { "platform": "LinkedIn", "icon": "linkedin", "url": "https://linkedin.com/in/jessicahakmeh" },
+      { "platform": "WhatsApp", "icon": "whatsapp", "url": "https://wa.me/96171709907" },
+      { "platform": "Email", "icon": "envelope", "url": "mailto:jessicahakmeh@gmail.com" }
     ],
     "back_to_top": true
   }

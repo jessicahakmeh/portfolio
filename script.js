@@ -48,9 +48,10 @@ function calculateCurrentYear() {
 }
 
 // Navigation Initialization
+
+
 function initializeNavigation() {
     const navMenu = document.getElementById('navMenu');
-    const navSocial = document.getElementById('navSocial');
     const menuItems = window.data.site_configuration.navigation.menu_items;
     
     // Create navigation links
@@ -58,16 +59,23 @@ function initializeNavigation() {
         `<a href="#${item.id}" class="nav-link" data-target="${item.id}">${item.label}</a>`
     ).join('');
 
-    // Create social icons
-    const socialLinks = window.data.sections.home.hero.social_links;
-    navSocial.innerHTML = Object.entries(socialLinks)
-        .filter(([_, data]) => data.show)
-        .map(([platform, data]) => 
-            `<a href="${data.url}" target="_blank" class="social-icon" aria-label="${platform}">
-                <i class="fab fa-${data.icon}"></i>
-            </a>`
-        ).join('');
-}
+    // smooth page transition when clicking a link
+    navMenu.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const targetId = link.dataset.target;
+            const target = document.getElementById(targetId);
+            if (target) {
+                e.preventDefault();
+                document.body.classList.add('transitioning');
+                setTimeout(() => {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    // remove class after animation finishes
+                    setTimeout(() => document.body.classList.remove('transitioning'), 300);
+                }, 300);
+            }
+        });
+    });
+} 
 
 // Home Section Initialization
 function initializeHome() {
@@ -116,6 +124,12 @@ function initializeAbout() {
     
     document.getElementById('aboutSubtitle').textContent = about.subtitle;
     document.getElementById('aboutTitle').textContent = about.title;
+
+    // Handle profile image
+    const imagePlaceholder = document.querySelector('.image-placeholder');
+    if (about.content.image && imagePlaceholder) {
+        imagePlaceholder.innerHTML = `<img src="${about.content.image}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">`;
+    }
 
     // Create about text
     const aboutText = document.getElementById('aboutText');
@@ -222,35 +236,81 @@ function initializeProjects() {
     document.getElementById('projectsTitle').textContent = projects.title;
 
     const projectsGrid = document.getElementById('projectsGrid');
+    const projectsContainer = projectsGrid.parentElement;
     
-    projectsGrid.innerHTML = projects.featured_projects.map(project => `
-        <div class="project-card fade-in" data-id="${project.id}">
-            <div class="project-card-inner">
-                <div class="project-card-front">
-                    <div class="folder-icon">
-                        <i class="fas fa-folder-open"></i>
-                        <i class="fas fa-${getProjectIcon(project)} folder-overlay"></i>
+    // Separate featured and non-featured projects
+    const allProjects = projects.featured_projects;
+    const featuredProjects = allProjects.filter(p => p.featured === true);
+    const otherProjects = allProjects.filter(p => p.featured === false);
+    
+    // Track which view is active
+    let state = {
+        isShowingOthers: false
+    };
+    
+    // Render projects based on current state
+    const renderProjects = () => {
+        const projectsToShow = state.isShowingOthers ? otherProjects : featuredProjects;
+        
+        projectsGrid.innerHTML = projectsToShow.map(project => `
+            <div class="project-card fade-in" data-id="${project.id}">
+                <div class="project-card-inner">
+                    <div class="project-card-front">
+                        <div class="folder-icon">
+                            <i class="fas fa-folder-open"></i>
+                            <i class="fas fa-${getProjectIcon(project)} folder-overlay"></i>
+                        </div>
+                        <h3 class="project-title">${project.name}</h3>
+                        <div class="project-meta">${project.year || ''} - ${project.category || ''}</div>
+                        <p class="project-description">${project.short_description}</p>
+                        <div class="project-tech">
+                            ${project.technologies.slice(0, 3).map(tech => `<span>${tech}</span>`).join('')}
+                        </div>
+                        <div class="project-company">
+                            <i class="fas fa-building"></i> ${project.company || ''}
+                        </div>
                     </div>
-                    <h3 class="project-title">${project.name}</h3>
-                    <p class="project-description">${project.short_description}</p>
-                    <div class="project-tech">
-                        ${project.technologies.slice(0, 3).map(tech => `<span>${tech}</span>`).join('')}
+                    <div class="project-card-back">
+                        <h4 class="back-title">Key Contributions</h4>
+                        <ul class="back-list">
+                            ${project.contribution.slice(0, 4).map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                        <button class="project-more" data-id="${project.id}">Check more</button>
                     </div>
-                    <div class="project-company">
-                        <i class="fas fa-building"></i> ${project.company || ''}
-                    </div>
-                </div>
-                <div class="project-card-back">
-                    <h4 class="back-title">Key Contributions</h4>
-                    <ul class="back-list">
-                        ${project.contribution.slice(0, 4).map(item => `<li>${item}</li>`).join('')}
-                    </ul>
-                    <button class="project-more" data-id="${project.id}">Check more</button>
                 </div>
             </div>
-        </div>
-    `).join('');
-}
+        `).join('');
+        
+        // Reinitialize animations for new cards
+        const newCards = projectsGrid.querySelectorAll('.project-card');
+        newCards.forEach(card => card.classList.add('animate'));
+    };
+    
+    // Create or get toggle button
+    let toggleBtn = projectsContainer.querySelector('.projects-toggle-btn');
+    if (!toggleBtn && otherProjects.length > 0) {
+        toggleBtn = document.createElement('button');
+        toggleBtn.className = 'projects-toggle-btn';
+        projectsContainer.insertBefore(toggleBtn, projectsGrid);
+    }
+    
+    // Set initial text and visibility
+    if (toggleBtn) {
+        toggleBtn.textContent = 'Show Other Projects';
+        toggleBtn.style.display = otherProjects.length > 0 ? 'block' : 'none';
+        
+        // Attach click handler
+        toggleBtn.addEventListener('click', () => {
+            state.isShowingOthers = !state.isShowingOthers;
+            toggleBtn.textContent = state.isShowingOthers ? 'Show Featured Projects' : 'Show Other Projects';
+            toggleBtn.classList.toggle('active');
+            renderProjects();
+        });
+    }
+    
+    // Initial render - featured projects only
+    renderProjects();
+} 
 
 function getProjectIcon(project) {
     if (project.name.includes('Newborn')) return 'video';
@@ -264,25 +324,24 @@ function getProjectIcon(project) {
 // Projects Modal Initialization
 function initializeProjectModal() {
     const modal = document.getElementById('projectModal');
-    const modalBody = document.getElementById('modalBody');
     const closeBtn = document.querySelector('.modal-close');
 
     // delegate clicks
     document.body.addEventListener('click', function(e) {
+        const projectCard = e.target.closest('.project-card');
+        if (projectCard && projectCard.dataset.id) {
+            const id = projectCard.dataset.id;
+            const project = window.data.sections.projects.featured_projects.find(p => p.id === id);
+            if (project) {
+                showProjectModal(project);
+            }
+        }
+        
         if (e.target.classList.contains('project-more')) {
             const id = e.target.dataset.id;
             const project = window.data.sections.projects.featured_projects.find(p => p.id === id);
             if (project) {
-                // build modal content
-                modalBody.innerHTML = `
-                    <h2>${project.name}</h2>
-                    <p>${project.full_description}</p>
-                    <h4>Features</h4>
-                    <ul>${project.features.map(f => `<li>${f}</li>`).join('')}</ul>
-                    <h4>Challenges</h4>
-                    <ul>${project.challenges.map(c => `<li><strong>${c.problem}</strong>: ${c.solution}</li>`).join('')}</ul>
-                `;
-                modal.classList.remove('hidden');
+                showProjectModal(project);
             }
         }
 
@@ -291,6 +350,332 @@ function initializeProjectModal() {
             modal.classList.add('hidden');
         }
     });
+}
+
+// animate the sequential appearance of workflow nodes
+function animateWorkflow(container) {
+    const nodes = Array.from(container.children);
+    nodes.forEach((node, idx) => {
+        setTimeout(() => {
+            node.classList.add('show');
+        }, idx * 200);
+    });
+}
+
+// Initialize expandable sections
+function initializeExpandableSections() {
+    document.querySelectorAll('.section-toggle').forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const content = toggle.nextElementSibling;
+            content.classList.toggle('active');
+            const icon = toggle.querySelector('i');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        });
+    });
+}
+
+// Initialize swipe cards for challenges
+function initializeSwipeCards() {
+    document.querySelectorAll('.swipe-container').forEach(container => {
+        const wrapper = container.querySelector('.swipe-wrapper');
+        const dots = container.querySelectorAll('.swipe-dot');
+        let currentSlide = 0;
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+
+        // Touch events for mobile
+        wrapper.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+        }, false);
+
+        wrapper.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX;
+            const diff = (currentX - startX) / wrapper.offsetWidth * 100;
+            wrapper.style.transform = `translateX(calc(-${currentSlide * 100}% + ${diff}%))`;
+        }, false);
+
+        wrapper.addEventListener('touchend', () => {
+            isDragging = false;
+            const diff = startX - currentX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0 && currentSlide < 1) currentSlide++;
+                if (diff < 0 && currentSlide > 0) currentSlide--;
+            }
+            updateSlide();
+        }, false);
+
+        // Mouse drag for desktop
+        wrapper.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging || wrapper !== container.querySelector('.swipe-wrapper')) return;
+            currentX = e.clientX;
+            const diff = (currentX - startX) / wrapper.offsetWidth * 100;
+            wrapper.style.transform = `translateX(calc(-${currentSlide * 100}% + ${diff}%))`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            const diff = startX - currentX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0 && currentSlide < 1) currentSlide++;
+                if (diff < 0 && currentSlide > 0) currentSlide--;
+            }
+            updateSlide();
+        });
+
+        // Dot click navigation
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                currentSlide = parseInt(dot.dataset.slide);
+                updateSlide();
+            });
+        });
+
+        function updateSlide() {
+            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentSlide);
+            });
+        }
+    });
+}
+
+// helper used by project modal handlers so logic isn't duplicated
+function showProjectModal(project) {
+    const modal = document.getElementById('projectModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMeta = document.getElementById('modalMeta');
+    const modalBody = document.getElementById('modalBody');
+
+    // Set header
+    modalTitle.textContent = project.name;
+    modalMeta.textContent = `${project.category || ''} - ${project.year || ''} ${project.role ? ' - ' + project.role : ''}`;
+
+    // Helper to create expandable section
+    const createSection = (title, content, isOpen = false) => {
+        return `
+            <div class="expandable-section ${isOpen ? 'open' : ''}">
+                <h4 class="section-toggle">
+                    <span class="section-title">${title}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </h4>
+                <div class="section-content ${isOpen ? 'active' : ''}">
+                    ${content}
+                </div>
+            </div>
+        `;
+    };
+
+    // Helper to create static (non-collapsible) section
+    const createStaticSection = (title, content) => {
+        return `
+            <div class="static-section">
+                <h4 class="section-title-static">${title}</h4>
+                <div class="section-content-static">
+                    ${content}
+                </div>
+            </div>
+        `;
+    };
+
+    // Build all sections
+    let sections = [];
+
+    // 1. Description (Static - Always Visible)
+    sections.push(createStaticSection(
+        'Overview',
+        `<p class="section-description">${project.full_description}</p>`
+    ));
+
+    // 2. Context (Static - Always Visible)
+    if (project.context) {
+        sections.push(createStaticSection(
+            'Context',
+            `<p class="section-description">${project.context}</p>`
+        ));
+    }
+
+    // 3. Problem vs Solution (Swipe Cards)
+    if (project.challenges && project.challenges.length) {
+        const challengesContent = `
+            <div class="swipe-hint">
+                <span class="hint-text"><i class="fas fa-hand-pointer"></i> Swipe or drag to view solutions</span>
+            </div>
+            ${project.challenges.map((challenge, idx) =>
+                `<div class="challenge-item" data-index="${idx}">
+                    <div class="swipe-container">
+                        <div class="swipe-wrapper">
+                            <div class="swipe-card problem-card">
+                                <div class="card-header">Problem ${idx + 1}</div>
+                                <div class="card-content">
+                                    ${challenge.problem}
+                                </div>
+                            </div>
+                            <div class="swipe-card solution-card">
+                                <div class="card-header">Solution ${idx + 1}</div>
+                                <div class="card-content">
+                                    ${challenge.solution}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swipe-indicators">
+                            <span class="swipe-dot active" data-slide="0"></span>
+                            <span class="swipe-dot" data-slide="1"></span>
+                        </div>
+                    </div>
+                </div>`
+            ).join('')}
+        `;
+        sections.push(createSection('Challenges & Solutions', challengesContent));
+    }
+
+    // 4. Constraints and Problems
+    let constraintsHtml = '';
+    if (project.problem && project.problem.length) {
+        constraintsHtml += `
+            <div class="constraint-block">
+                <h5>Key Problems</h5>
+                <ul class="constraint-list">
+                    ${project.problem.map(p => `<li>${p}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+    if (project.constraints && project.constraints.length) {
+        constraintsHtml += `
+            <div class="constraint-block">
+                <h5>Constraints</h5>
+                <ul class="constraint-list">
+                    ${project.constraints.map(c => `<li>${c}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+    if (constraintsHtml) {
+        sections.push(createSection('Scope & Constraints', constraintsHtml));
+    }
+
+    // 5. Approach and Architecture
+    let approachHtml = '';
+    if (project.approach) {
+        approachHtml += `<p class="section-description">${project.approach}</p>`;
+    }
+    if (project.architecture && project.architecture.length) {
+        approachHtml += `
+            <div class="architecture-grid">
+                ${project.architecture.map(arch => 
+                    `<div class="architecture-item">
+                        <i class="fas fa-cube"></i>
+                        <span>${arch}</span>
+                    </div>`
+                ).join('')}
+            </div>
+        `;
+    }
+    if (approachHtml) {
+        sections.push(createSection('Strategy & Architecture', approachHtml));
+    }
+
+    // 6. Features
+    if (project.features && project.features.length) {
+        const featuresContent = `
+            <div class="features-nodes" id="featuresNodes">
+                ${project.features.map((feature, idx) =>
+                    `<div class="feature-node" data-index="${idx}">
+                        <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="feature-content">${feature}</div>
+                    </div>`
+                ).join('')}
+            </div>
+        `;
+        sections.push(createSection('Key Features', featuresContent));
+    }
+
+    // 7. Workflow
+    if (project.workflow && project.workflow.length) {
+        const workflowContent = `
+            <div class="workflow-nodes" id="workflowNodes">
+                ${project.workflow.map((step, idx) =>
+                    `<div class="workflow-node" data-index="${idx}">
+                        <div class="step-number">Step ${idx + 1}</div>
+                        <div class="step-content">${step}</div>
+                        ${idx < project.workflow.length - 1 ? '<div class="step-arrow"><i class="fas fa-arrow-down"></i></div>' : ''}
+                    </div>`
+                ).join('')}
+            </div>
+        `;
+        sections.push(createSection('Process Flow', workflowContent));
+    }
+
+    // 8. Impact and Contribution
+    let impactHtml = '';
+    if (project.contribution && project.contribution.length) {
+        impactHtml += `
+            <div class="impact-block">
+                <h5>Contributions</h5>
+                <ul class="impact-list">
+                    ${project.contribution.map(c => `<li>${c}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+    if (project.impact && project.impact.length) {
+        impactHtml += `
+            <div class="impact-block">
+                <h5>Business Impact</h5>
+                <ul class="impact-list">
+                    ${project.impact.map(i => `<li>${i}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+    if (project.lessons_learned) {
+        impactHtml += `
+            <div class="impact-block">
+                <h5>Key Learnings</h5>
+                <p class="section-description">${project.lessons_learned}</p>
+            </div>
+        `;
+    }
+    if (impactHtml) {
+        sections.push(createSection('Impact & Outcomes', impactHtml));
+    }
+
+    modalBody.innerHTML = sections.join('');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('opening');
+    
+    // Remove animation class after animation completes
+    setTimeout(() => {
+        modal.classList.remove('opening');
+    }, 350);
+    
+    const nodesContainer = document.getElementById('workflowNodes');
+    if (nodesContainer) animateWorkflow(nodesContainer);
+
+    const featuresContainer = document.getElementById('featuresNodes');
+    if (featuresContainer) animateWorkflow(featuresContainer);
+
+    // Initialize expandable sections
+    initializeExpandableSections();
+
+    // Initialize challenge swipe cards
+    initializeChallengeToggles();
+}
+
+// Initialize challenge swipe cards
+function initializeChallengeToggles() {
+    initializeSwipeCards();
 }
 
 // Skills Section Initialization
@@ -413,39 +798,11 @@ function initializeContact() {
     const contactMethods = document.getElementById('contactMethods');
     contactMethods.innerHTML = contact.contact_methods.map(method => `
         <a href="${method.url}${method.value}" class="contact-method" ${method.type !== 'email' ? 'target="_blank"' : ''}>
-            <i class="fas ${method.type === 'email' ? 'fa-envelope' : `fa-brands fa-${method.icon}`}"></i>
+            <i class="${method.type === 'email' ? 'fas fa-envelope' : `fab fa-${method.icon}`}"></i>
             <span>${method.label}</span>
         </a>
     `).join('');
 
-    // Create contact form
-    const contactFormContainer = document.getElementById('contactFormContainer');
-    if (contact.contact_form.enabled) {
-        contactFormContainer.innerHTML = `
-            <form id="contactForm" class="contact-form">
-                ${contact.contact_form.fields.map(field => `
-                    <div class="form-group">
-                        ${field.type === 'textarea' 
-                            ? `<textarea id="${field.name}" name="${field.name}" placeholder="${field.placeholder}" ${field.required ? 'required' : ''} rows="${field.rows}"></textarea>`
-                            : `<input type="${field.type}" id="${field.name}" name="${field.name}" placeholder="${field.placeholder}" ${field.required ? 'required' : ''}>`
-                        }
-                        <label for="${field.name}">${field.placeholder}</label>
-                    </div>
-                `).join('')}
-                <button type="submit" class="btn btn-primary submit-btn">
-                    <span>${contact.contact_form.submit_text}</span>
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </form>
-        `;
-
-        // Add form submit handler
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert(contact.contact_form.success_message);
-            this.reset();
-        });
-    }
 }
 
 // Footer Initialization
@@ -462,8 +819,8 @@ function initializeFooter() {
 
     const footerSocial = document.getElementById('footerSocial');
     footerSocial.innerHTML = footer.social_links.map(link => `
-        <a href="#" target="_blank" aria-label="${link.platform}">
-            <i class="fab fa-${link.icon}"></i>
+        <a href="${link.url}" target="_blank" aria-label="${link.platform}">
+            <i class="${link.icon === 'envelope' ? 'fas' : 'fab'} fa-${link.icon}"></i>
         </a>
     `).join('');
 }
@@ -493,22 +850,24 @@ function initializeAnimations() {
 function initializeCustomCursor() {
     const cursor = document.querySelector('.cursor');
     const follower = document.querySelector('.cursor-follower');
+    const modal = document.getElementById('projectModal');
     
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
         follower.style.left = e.clientX + 'px';
         follower.style.top = e.clientY + 'px';
-    });
-
-    document.addEventListener('mouseenter', () => {
+        // Show cursor on first movement
         cursor.style.opacity = '1';
         follower.style.opacity = '1';
     });
 
     document.addEventListener('mouseleave', () => {
-        cursor.style.opacity = '0';
-        follower.style.opacity = '0';
+        // Only hide cursor if modal is not open
+        if (modal.classList.contains('hidden')) {
+            cursor.style.opacity = '0';
+            follower.style.opacity = '0';
+        }
     });
 
     // Hover effect for clickable elements
@@ -544,6 +903,8 @@ function initializeBackToTop() {
 
 function initializeMobileMenu() {
     const navToggle = document.getElementById('navToggle');
+    if (!navToggle) return;
+    
     const navMenu = document.getElementById('navMenu');
     
     navToggle.addEventListener('click', () => {

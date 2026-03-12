@@ -26,13 +26,10 @@
         <div class="nav-container">
             <a href="#home" class="nav-logo">
                 <span class="logo-text"><span class="accent">JH</span></span>
-                <div class="logo-dot"></div>
             </a>
             
             <div class="nav-menu" id="navMenu"></div>
-
-            <div class="nav-social" id="navSocial"></div>
-
+            
             <div class="nav-toggle" id="navToggle">
                 <span></span>
                 <span></span>
@@ -183,7 +180,6 @@
                 <div class="contact-content">
                     <p class="contact-description fade-in" id="contactDescription"></p>
                     <div class="contact-methods fade-in" id="contactMethods"></div>
-                    <div class="contact-form-container fade-in" id="contactFormContainer"></div>
                 </div>
             </div>
         </section>
@@ -192,8 +188,14 @@
     <!-- Project details modal -->
     <div id="projectModal" class="modal hidden">
         <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <div id="modalBody"></div>
+            <div class="modal-header">
+                <div class="modal-title-section">
+                    <h2 id="modalTitle"></h2>
+                    <p class="project-meta" id="modalMeta"></p>
+                </div>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
 
