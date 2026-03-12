@@ -27,10 +27,10 @@ window.data = {
         { "id": "home", "label": "Home", "icon": "home" },
         { "id": "about", "label": "About", "icon": "user" },
         { "id": "experience", "label": "Experience", "icon": "briefcase" },
-        { "id": "projects", "label": "Projects", "icon": "code" },
+        { "id": "projects", "label": "Projects", "icon": "rocket" },
         { "id": "skills", "label": "Skills", "icon": "star" },
         { "id": "achievements", "label": "Achievements", "icon": "trophy" },
-        { "id": "contact", "label": "Contact", "icon": "envelope" }
+        { "id": "contact", "label": "Contact", "icon": "phone" }
       ],
       "smooth_scroll": true,
       "sticky_nav": true,
@@ -90,7 +90,7 @@ window.data = {
             "Obtained a Master's degree at 23"
           ]
         },
-        "image": "profile.jpg"
+        "image": "media/about.jpg"
       }
     },
     "experience": {
@@ -151,6 +151,7 @@ window.data = {
       "category": "Healthcare Systems",
       "year": "2026",
       "featured": true,
+      "icon": "users",
       "role": "Systems Analyst, Lead Developer & QA Secialist",
       "context": "Outpatient workflow relied heavily on paper forms and manual coordination between reception, nurses, and physicians.",
       "problem": [
@@ -229,6 +230,7 @@ window.data = {
       "category": "Healthcare Data",
       "year": "2026",
       "featured": true,
+      "icon": "search",
       "role": "Systems Designer & Developer",
       "context": "Patient names were often entered inconsistently due to language differences and manual typing.",
       "problem": [
@@ -300,6 +302,7 @@ window.data = {
       "category": "Healthcare",
       "year": "2025",
       "featured": true,
+      "icon": "video",
       "role": "Lead Developer",
       "context": "Families unable to visit the hospital nursery in person needed a way to see their newborns remotely, especially during visiting restrictions.",
       "problem": [
@@ -372,6 +375,7 @@ window.data = {
       "category": "Automation",
       "year": "2024",
       "featured": false,
+      "icon": "comment",
       "role": "System engineer & Lead Developer",
       "context": "Patient feedback collection lacked validation mechanisms, leading to unreliable data from multiple submissions.",
       "problem": [
@@ -445,6 +449,7 @@ window.data = {
       "category": "CRM",
       "year": "2025",
       "featured": true,
+      "icon": "chart-line",
       "role": "CRM Implementation Consultant",
       "context": "Lead and client data was scattered across different platforms with no centralized view or automated follow-up processes.",
       "problem": [

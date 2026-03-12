@@ -193,6 +193,7 @@ function initializeExperience() {
             date: `${job.start_date} - ${job.end_date}`,
             title: job.position,
             company: job.company,
+            logo: job.logo,
             description: job.description,
             technologies: job.technologies,
             icon: 'briefcase'
@@ -202,6 +203,7 @@ function initializeExperience() {
             date: edu.date,
             title: edu.degree,
             company: edu.institution,
+            logo: edu.logo,
             description: edu.description,
             icon: 'graduation-cap'
         }))
@@ -214,6 +216,7 @@ function initializeExperience() {
                 <div class="timeline-icon">
                     <i class="fas fa-${item.icon}"></i>
                 </div>
+                ${item.logo ? `<div class="timeline-logo"><img src="${item.logo}" alt="${item.company}"></div>` : ''}
                 <div class="timeline-date">${item.date}</div>
                 <h3 class="timeline-title">${item.title}</h3>
                 <div class="timeline-company">${item.company}</div>
@@ -264,7 +267,7 @@ function initializeProjects() {
                         <div class="project-meta">${project.year || ''} - ${project.category || ''}</div>
                         <p class="project-description">${project.short_description}</p>
                         <div class="project-tech">
-                            ${project.technologies.slice(0, 3).map(tech => `<span>${tech}</span>`).join('')}
+                            ${project.technologies.map(tech => `<span>${tech}</span>`).join('')}
                         </div>
                         <div class="project-company">
                             <i class="fas fa-building"></i> ${project.company || ''}
@@ -313,10 +316,8 @@ function initializeProjects() {
 } 
 
 function getProjectIcon(project) {
-    if (project.name.includes('Newborn')) return 'video';
-    if (project.name.includes('Queue')) return 'users';
-    if (project.name.includes('Token')) return 'key';
-    return 'code';
+    // Use custom icon from project data if available, otherwise default to 'code'
+    return project.icon || 'rocket';
 }
 
 
@@ -502,6 +503,107 @@ function showProjectModal(project) {
             'Context',
             `<p class="section-description">${project.context}</p>`
         ));
+    }
+
+    // 2.5 Media Sections (Cover Image, Gallery, Diagrams, Demo Video)
+    if (project.media) {
+        // Cover Image
+        if (project.media.cover_image) {
+            sections.push(createStaticSection(
+                'Cover Image',
+                `<div class="media-cover-image">
+                    <img src="${project.media.cover_image}" alt="${project.name}" class="cover-image-img">
+                </div>`
+            ));
+        }
+
+        // Gallery
+        if (project.media.gallery && project.media.gallery.length > 0) {
+            const galleryHtml = `
+                <div class="media-gallery">
+                    <div class="gallery-grid">
+                        ${project.media.gallery.map((img, idx) => 
+                            `<div class="gallery-item" data-index="${idx}">
+                                <img src="${img}" alt="Gallery ${idx + 1}">
+                                <div class="gallery-overlay">
+                                    <i class="fas fa-expand"></i>
+                                </div>
+                            </div>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+            sections.push(createStaticSection('Gallery', galleryHtml));
+        }
+
+        // Diagrams
+        if (project.media.diagrams && project.media.diagrams.length > 0) {
+            const diagramsHtml = `
+                <div class="media-diagrams">
+                    <div class="diagram-grid">
+                        ${project.media.diagrams.map((diagram, idx) => 
+                            `<div class="diagram-item" data-index="${idx}">
+                                <img src="${diagram}" alt="Diagram ${idx + 1}">
+                                <div class="diagram-overlay">
+                                    <i class="fas fa-expand"></i>
+                                </div>
+                            </div>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+            sections.push(createStaticSection('Diagrams & Visuals', diagramsHtml));
+        }
+
+        // Demo Video
+        if (project.media.demo_video) {
+            let videoHtml = '';
+            // Check if it's a YouTube/Vimeo URL
+            if (project.media.demo_video.includes('youtube.com') || project.media.demo_video.includes('youtu.be')) {
+                let videoId = '';
+                if (project.media.demo_video.includes('youtu.be')) {
+                    videoId = project.media.demo_video.split('youtu.be/')[1];
+                } else {
+                    videoId = project.media.demo_video.split('v=')[1];
+                }
+                videoHtml = `
+                    <div class="media-video">
+                        <div class="video-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+                                    src="https://www.youtube.com/embed/${videoId}" 
+                                    allowfullscreen="" 
+                                    allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                            </iframe>
+                        </div>
+                    </div>
+                `;
+            } else if (project.media.demo_video.includes('vimeo.com')) {
+                let videoId = project.media.demo_video.split('vimeo.com/')[1];
+                videoHtml = `
+                    <div class="media-video">
+                        <div class="video-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+                                    src="https://player.vimeo.com/video/${videoId}" 
+                                    allowfullscreen="">
+                            </iframe>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Local video file
+                videoHtml = `
+                    <div class="media-video">
+                        <div class="video-container">
+                            <video width="100%" height="auto" controls style="border-radius: 0.5rem;">
+                                <source src="${project.media.demo_video}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                `;
+            }
+            sections.push(createStaticSection('Demo Video', videoHtml));
+        }
     }
 
     // 3. Problem vs Solution (Swipe Cards)
