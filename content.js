@@ -533,37 +533,36 @@ window.data = {
           "category": "Programming Languages",
           "icon": "code",
           "skills": [
-            { "name": "PHP", "level": 90, "years": 2 },
+            { "name": "PHP", "level": 80, "years": 2 },
             { "name": "Python", "level": 80, "years": 1 },
             { "name": "JavaScript", "level": 75, "years": 2 },
             { "name": "SQL", "level": 85, "years": 2 }
           ]
         },
         {
-          "category": "Databases & Tools",
+          "category": "Systems & Tools",
           "icon": "database",
           "skills": [
-            { "name": "MySQL", "level": 85, "years": 2 },
-            { "name": "FFMPEG", "level": 70, "years": 1 },
-            { "name": "Fortigate Firewall", "level": 65, "years": 1 },
-            { "name": "tally.so", "level": 80, "years": 1 }
+            { "name": "Vitec Digital Signage", "level": 85},
+            { "name": "Huawei Switching", "level": 60},
+            { "name": "Fortigate Firewall", "level": 65},
+            { "name": "Windows Servers", "level": 85},
+            { "name": "Active Directory", "level": 80},
+            { "name": "tally.so", "level": 85 },
+            { "name": "Zoho One", "level": 75 }
           ]
         }
       ],
       "methodologies": [
         {
           "category": "System Analysis",
-          "skills": ["Requirements Gathering", "Workflow Design", "System Architecture", "Integration Planning"]
-        },
-        {
-          "category": "Development Lifecycle",
-          "skills": ["Full Development", "Testing", "Deployment", "User Training", "R&D"]
+          "skills": ["Requirements Gathering", "Workflow Design", "System Architecture", "Integration Planning", "Testing & QA", "R&D"]
         }
       ],
       "soft_skills": [
-        { "name": "User Training", "level": 90 },
+        { "name": "User Training", "level": 80 },
         { "name": "Cross-functional Communication", "level": 85 },
-        { "name": "Problem Solving", "level": 95 },
+        { "name": "Problem Solving", "level": 85 },
         { "name": "Adaptability", "level": 90 },
         { "name": "Project Management", "level": 75 }
       ],
