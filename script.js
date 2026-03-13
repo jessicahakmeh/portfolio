@@ -196,7 +196,7 @@ function initializeExperience() {
             logo: job.logo,
             description: job.description,
             technologies: job.technologies,
-            icon: 'briefcase'
+            icon: job.icon || 'briefcase'
         })),
         ...experience.education.map(edu => ({
             type: 'education',
@@ -205,7 +205,7 @@ function initializeExperience() {
             company: edu.institution,
             logo: edu.logo,
             description: edu.description,
-            icon: 'graduation-cap'
+            icon: edu.icon || 'graduation-cap'
         }))
     ];
 
@@ -789,17 +789,18 @@ function initializeSkills() {
 
     const skillsTree = document.getElementById('skillsTree');
     
-    skillsTree.innerHTML = skills.technical.map(category => `
-        <div class="skill-category fade-in">
-            <div class="skill-header" data-category="${category.category.toLowerCase().replace(/\s+/g, '-')}">
-                <div class="skill-title-wrapper">
-                    <i class="fas fa-${category.icon} skill-icon"></i>
-                    <h3 class="skill-title">${category.category}</h3>
-                </div>
-                <i class="fas fa-chevron-right skill-toggle"></i>
-            </div>
-            <div class="skill-items" id="${category.category.toLowerCase().replace(/\s+/g, '-')}">
-                ${category.skills.map(skill => `
+    // Helper function to render skill items - handles both string arrays and object arrays
+    const renderSkillItems = (skillsArray) => {
+        // Check if it's an array of strings or objects
+        if (Array.isArray(skillsArray) && skillsArray.length > 0) {
+            if (typeof skillsArray[0] === 'string') {
+                // String array - render as tags
+                return `<div class="methodology-list">
+                    ${skillsArray.map(skill => `<span class="methodology-tag">${skill}</span>`).join('')}
+                </div>`;
+            } else {
+                // Object array - render with progress bars
+                return skillsArray.map(skill => `
                     <div class="skill-item">
                         <span class="skill-name">${skill.name}</span>
                         <div class="skill-bar">
@@ -807,27 +808,58 @@ function initializeSkills() {
                         </div>
                         <span class="skill-level">${skill.level}%</span>
                     </div>
-                `).join('')}
-            </div>
-        </div>
-    `).join('') + `
+                `).join('');
+            }
+        }
+        return '';
+    };
+
+    // Collect all categories (technical, methodologies, soft_skills)
+    const allCategories = [];
+    
+    // Add technical categories
+    if (skills.technical) {
+        allCategories.push(...skills.technical.map(cat => ({
+            ...cat,
+            id: cat.category.toLowerCase().replace(/\s+/g, '-')
+        })));
+    }
+    
+    // Add methodologies as a category
+    if (skills.methodologies) {
+        allCategories.push({
+            category: 'Methodologies',
+            icon: 'diagram-project',
+            id: 'methodologies',
+            skills: skills.methodologies.flatMap(m => m.skills)
+        });
+    }
+    
+    // Add soft_skills as a category
+    if (skills.soft_skills) {
+        allCategories.push({
+            category: 'Soft Skills',
+            icon: 'heart',
+            id: 'soft-skills',
+            skills: skills.soft_skills
+        });
+    }
+
+    // Render all categories
+    skillsTree.innerHTML = allCategories.map(category => `
         <div class="skill-category fade-in">
-            <div class="skill-header" data-category="methodologies">
+            <div class="skill-header" data-category="${category.id}">
                 <div class="skill-title-wrapper">
-                    <i class="fas fa-diagram-project skill-icon"></i>
-                    <h3 class="skill-title">Methodologies</h3>
+                    <i class="fas fa-${category.icon} skill-icon"></i>
+                    <h3 class="skill-title">${category.category}</h3>
                 </div>
                 <i class="fas fa-chevron-right skill-toggle"></i>
             </div>
-            <div class="skill-items" id="methodologies">
-                <div class="methodology-list">
-                    ${skills.methodologies.flatMap(m => m.skills).map(skill => 
-                        `<span class="methodology-tag">${skill}</span>`
-                    ).join('')}
-                </div>
+            <div class="skill-items" id="${category.id}">
+                ${renderSkillItems(category.skills)}
             </div>
         </div>
-    `;
+    `).join('');
 
     // Add click handlers for skill categories
     document.querySelectorAll('.skill-header').forEach(header => {
@@ -853,7 +885,7 @@ function initializeAchievements() {
     achievementsGrid.innerHTML = achievements.awards.map(award => `
         <div class="achievement-card fade-in">
             <div class="achievement-icon">
-                <i class="fas fa-${award.icon}"></i>
+                <i class="fas fa-${award.icon || 'trophy'}"></i>
             </div>
             <h3 class="achievement-title">${award.title}</h3>
             <p class="achievement-org">${award.organization}</p>
@@ -862,7 +894,7 @@ function initializeAchievements() {
     `).join('') + achievements.certifications.map(cert => `
         <div class="achievement-card fade-in">
             <div class="achievement-icon">
-                <i class="fas fa-certificate"></i>
+                <i class="fas fa-${cert.icon || 'certificate'}"></i>
             </div>
             <h3 class="achievement-title">${cert.name}</h3>
             <p class="achievement-org">${cert.issuer}</p>
@@ -872,20 +904,23 @@ function initializeAchievements() {
 
     // Create dynamic stats
     const statsContainer = document.getElementById('statsContainer');
-    statsContainer.innerHTML = `
-        <div class="stat-box fade-in">
-            <span class="stat-box-number">${calculateProjectCount()}</span>
-            <span class="stat-box-label">Major Projects</span>
-        </div>
-        <div class="stat-box fade-in">
-            <span class="stat-box-number">${calculateYearsExperience()}+</span>
-            <span class="stat-box-label">Years Experience</span>
-        </div>
-        <div class="stat-box fade-in">
-            <span class="stat-box-number">${calculateDegreeCount()}</span>
-            <span class="stat-box-label">Degrees</span>
-        </div>
-    `;
+    statsContainer.innerHTML = achievements.stats.map(stat => {
+        let value = '';
+        if (stat.type === 'project_count') {
+            value = calculateProjectCount();
+        } else if (stat.type === 'experience') {
+            value = calculateYearsExperience() + '+';
+        } else if (stat.type === 'degree_count') {
+            value = calculateDegreeCount();
+        }
+
+        return `
+            <div class="stat-box fade-in">
+                <span class="stat-box-number">${value}</span>
+                <span class="stat-box-label">${stat.label}</span>
+            </div>
+        `;
+    }).join('');
 }
 
 // Contact Section Initialization

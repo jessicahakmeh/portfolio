@@ -100,6 +100,7 @@ window.data = {
         {
           "company": "SLH",
           "logo": "",
+          "icon": "briefcase",
           "position": "Digital Transformation Specialist",
           "start_date": "2023",
           "end_date": "Present",
@@ -123,6 +124,7 @@ window.data = {
         {
           "institution": "Lebanese University",
           "logo": "",
+          "icon": "graduation-cap",
           "degree": "Master's Degree in Management Information Systems",
           "date": "2025",
           "description": "Focused on digital transformation strategies and advanced system analysis.",
@@ -131,6 +133,7 @@ window.data = {
         {
           "institution": "Lebanese University",
           "logo": "",
+          "icon": "graduation-cap",
           "degree": "Bachelor's Degree in Management Information Systems",
           "date": "2023",
           "description": "Foundation in programming, databases, and information systems.",
@@ -569,26 +572,44 @@ window.data = {
     "achievements": {
       "title": "Achievements",
       "subtitle": "Recognition & Milestones",
+      "stats": [
+        {
+          "label": "Major Projects",
+          "icon": "rocket",
+          "type": "project_count"
+        },
+        {
+          "label": "Years Experience",
+          "icon": "briefcase",
+          "type": "experience"
+        },
+        {
+          "label": "Degrees",
+          "icon": "graduation-cap",
+          "type": "degree_count"
+        }
+      ],
       "awards": [
         {
           "title": "Employee of the Year 2025",
-          "organization": "SLH",
+          "organization": "Saint Louis Hospital",
           "date": "2025",
-          "description": "Recognized for exceptional contributions to digital transformation initiatives, including three major hospital systems.",
-          "icon": "trophy",
-          "featured": true
+          "description": "Recognized for exceptional contributions to digital transformation initiatives, including three major hospital systems that year.",
+          "icon": "trophy"
         }
       ],
       "certifications": [
         {
           "name": "Master's in MIS",
           "issuer": "Lebanese University",
-          "date": "2025"
+          "date": "2025",
+          "icon": "book-open"
         },
         {
           "name": "Bachelor's in MIS",
           "issuer": "Lebanese University",
-          "date": "2023"
+          "date": "2023",
+          "icon": "book-open"
         }
       ]
     },
