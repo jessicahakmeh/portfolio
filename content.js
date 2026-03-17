@@ -55,7 +55,7 @@ window.data = {
         "short_bio": "I transform workflows through innovative technology solutions.",
         "cta_buttons": [
           { "text": "View Projects", "link": "#projects", "primary": true },
-          { "text": "Contact Me", "link": "#contact", "primary": false }
+          { "text": "Contact Me", "link": "#contact", "primary": false },
         ],
         "social_links": {
           "linkedin": { "url": "", "icon": "linkedin", "show": true },
@@ -98,26 +98,43 @@ window.data = {
       "subtitle": "Where I've worked",
       "employment": [
         {
-          "company": "SLH",
+          "company": "Saint Louis Hospital",
           "logo": "",
           "icon": "briefcase",
-          "position": "Digital Transformation Specialist",
-          "start_date": "2023",
+          "position": "IT Specialist",
+          "start_date": "Sep 2023",
           "end_date": "Present",
-          "location": "",
-          "description": "Leading digital transformation initiatives focused on healthcare workflow optimization and patient experience enhancement.",
+          "location": "Jounieh",
+          "description": "Leading digital transformation initiatives focused on healthcare workflow optimization, plus maintaining the hospital IT backbone and supporting employees.",
           "highlights": [
-            "Developed 3 major hospital systems currently in production",
-            "Reduced patient wait times through workflow optimization",
-            "Implemented secure streaming solution for newborn nursery",
+            "Developed 6 hospital inteernal tools currently in production",
+            "Enhanced Patient Satisfaction through workflow optimization and value added services",
+            "Implemented secure streaming solutions for newborn nursery",
+            "Contributed to the deployment and R&D of patient bedside infotainment tablets"
+            "Coordinated the integration mechanism between HIS and 5 other ERP systems",
             "Named Employee of the Year 2025"
           ],
-          "technologies": ["PHP", "Python", "MySQL", "FFMPEG", "Fortigate Firewall"],
+          "technologies": ["Mikrotik Router", "Windows Server", "Huawei Switches", "Exchange Server", "Active Directory", "Fortigate Firewall", "Grandstream UCM PBX"],
           "projects": [
-            { "project_id": "newborn-virtual-visit", "relationship": "Lead Developer" },
-            { "project_id": "outpatient-queue-system", "relationship": "Full-Stack Developer & Business Analyst" },
-            { "project_id": "token-form-system", "relationship": "Lead Developer" }
+            { "project_id": "newborn-virtual-visit"" },
+            { "project_id": "outpatient-queue-system" },
+            { "project_id": "token-form-system" },
+            { "project_id": "patient-search-engine" }
           ]
+        }
+        {
+          "company": "Safe Business Choice",
+          "logo": "",
+          "icon": "briefcase",
+          "position": "IT Support",
+          "start_date": "July 2022",
+          "end_date": "Sep 2023",
+          "location": "Zouk Mikael",
+          "description": "",
+          "highlights": [
+          ],
+          "technologies": ["Anydesk", "SQL", "POS"],
+          "projects": []
         }
       ],
       "education": [
@@ -151,7 +168,7 @@ window.data = {
       "short_description": "Digitization of outpatient workflow and queue tracking.",
       "full_description": "A custom system designed to digitize and streamline the hospital outpatient workflow, replacing paper-based coordination with a real-time queue and workflow management platform.",
       "company": "Saint Louis Hospital",
-      "category": "Healthcare Systems",
+      "category": "Workflow Optimization",
       "year": "2026",
       "featured": true,
       "icon": "users",
@@ -228,21 +245,21 @@ window.data = {
       "id": "patient-search-engine",
       "name": "Patient Identity Search & Name Standardization Engine",
       "short_description": "Smart patient lookup system preventing duplicate MRNs.",
-      "full_description": "A sophisticated search engine capable of interpreting variations in patient name spelling across languages, preventing duplicate medical records and improving lookup accuracy.",
+      "full_description": "A search engine capable of interpreting variations in patient name spelling across languages, preventing duplicate medical records and improving lookup accuracy. A later update introduced the billing items nomenclature variations lookup for laboratory and imaging tests.",
       "company": "Saint Louis Hospital",
-      "category": "Healthcare Data",
+      "category": "Data Management",
       "year": "2026",
       "featured": true,
       "icon": "search",
       "role": "Systems Designer & Developer",
-      "context": "Patient names were often entered inconsistently due to language differences and manual typing.",
+      "context": "Patient names were often entered inconsistently due to language differences and manual typing. Prescriptions are not unified in nomination across physicians.",
       "problem": [
         "Duplicate medical record numbers",
         "Difficulty finding patients in the system",
-        "Inconsistent spelling across languages"
+        "Inconsistent spelling across languages",
+        "Different test terminologies written on prescriptions"
       ],
       "constraints": [
-        "Large existing database with legacy data",
         "Multiple languages and naming conventions",
         "Real-time lookup requirements"
       ],
@@ -263,7 +280,8 @@ window.data = {
         "Name normalization logic",
         "Phonetic search variations",
         "Eligibility flagging for employee benefits",
-        "Flagging tests with multiple items to bill"
+        "Flagging tests with multiple items to bill",
+        "admin dashboard to manage tests, names, employees and their relatives"
       ],
       "contribution": [
         "Algorithm design",
@@ -285,6 +303,7 @@ window.data = {
       "impact": [
         "Reduced patients with duplicate records",
         "Improved patient lookup speed",
+        "Improved billing accuracy"
         "Better data quality"
       ],
       "lessons_learned": "Simple fuzzy matching isn't enough; lookup needs to be organized.",
@@ -300,7 +319,7 @@ window.data = {
       "id": "newborn-virtual-visit",
       "name": "Newborn Virtual Visit Portal",
       "short_description": "Live streaming for hospital nurseries",
-      "full_description": "A secure portal that streams baby cribs in the nursery via public links valid for 24 hours, allowing families to virtually visit their newborns.",
+      "full_description": "A secure token based portal that streams individually selected baby cribs in the nursery via public links valid for 24 hours, allowing families to virtually visit their newborns.",
       "company": "Saint Louis Hospital",
       "category": "Healthcare",
       "year": "2025",
@@ -311,7 +330,7 @@ window.data = {
       "problem": [
         "Families unable to visit nursery in person",
         "Security concerns with public streaming",
-        "Need for simple access without complex login"
+        "Need for simple access without login"
       ],
       "constraints": [
         "Hospital network security policies",
@@ -637,6 +656,13 @@ window.data = {
           "icon": "linkedin",
           "url": "https://linkedin.com/in/jessicahakmeh",
           "primary": false
+        },
+        {
+          "type": "Resume",
+          "label": "Download my CV",
+          "icon": "download",
+          "url": "https://drive.google.com/file/d/1NiLakvGxxmVWl84Polwmhm8CJKyWIfaP/view?usp=drive_link",
+          "primary": true
         }
       ],
       "availability": "Open to opportunities"
