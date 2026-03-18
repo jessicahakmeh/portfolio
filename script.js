@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeHome();
     initializeAbout();
     initializeExperience();
+    initializeEducation();
     initializeProjects();
     initializeProjectModal();
     initializeSkills();
@@ -52,7 +53,19 @@ function calculateCurrentYear() {
 
 function initializeNavigation() {
     const navMenu = document.getElementById('navMenu');
-    const menuItems = window.data.site_configuration.navigation.menu_items;
+    const menuItems = [...window.data.site_configuration.navigation.menu_items];
+
+    // Ensure Education appears in nav when section exists.
+    if (document.getElementById('education') && !menuItems.some(item => item.id === 'education')) {
+        const experienceIndex = menuItems.findIndex(item => item.id === 'experience');
+        const educationItem = { id: 'education', label: 'Education', icon: 'graduation-cap' };
+
+        if (experienceIndex >= 0) {
+            menuItems.splice(experienceIndex + 1, 0, educationItem);
+        } else {
+            menuItems.push(educationItem);
+        }
+    }
     
     // Create navigation links
     navMenu.innerHTML = menuItems.map(item => 
@@ -185,29 +198,15 @@ function initializeExperience() {
     document.getElementById('experienceTitle').textContent = experience.title;
 
     const timeline = document.getElementById('timeline');
-    
-    // Create timeline from employment and education
-    const timelineItems = [
-        ...experience.employment.map(job => ({
-            type: 'work',
-            date: `${job.start_date} - ${job.end_date}`,
-            title: job.position,
-            company: job.company,
-            logo: job.logo,
-            description: job.description,
-            technologies: job.technologies,
-            icon: job.icon || 'briefcase'
-        })),
-        ...experience.education.map(edu => ({
-            type: 'education',
-            date: edu.date,
-            title: edu.degree,
-            company: edu.institution,
-            logo: edu.logo,
-            description: edu.description,
-            icon: edu.icon || 'graduation-cap'
-        }))
-    ];
+    const timelineItems = experience.employment.map(job => ({
+        date: `${job.start_date} - ${job.end_date}`,
+        title: job.position,
+        company: job.company,
+        logo: job.logo,
+        description: job.description,
+        technologies: job.technologies,
+        icon: job.icon || 'briefcase'
+    }));
 
     timeline.innerHTML = timelineItems.map((item, index) => `
         <div class="timeline-item fade-in" data-position="${index % 2 === 0 ? 'left' : 'right'}">
@@ -226,6 +225,62 @@ function initializeExperience() {
                         ${item.technologies.map(tech => `<span>${tech}</span>`).join('')}
                     </div>
                 ` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+// Education Section Initialization
+function initializeEducation() {
+    const experience = window.data.sections.experience;
+    const educationSubtitle = document.getElementById('educationSubtitle');
+    const educationTitle = document.getElementById('educationTitle');
+    const educationTimeline = document.getElementById('educationTimeline');
+    const certificatesCta = document.getElementById('certificatesCta');
+
+    if (!educationSubtitle || !educationTitle || !educationTimeline || !certificatesCta) {
+        return;
+    }
+
+    educationSubtitle.textContent = experience.education_subtitle || 'Academic Background';
+    educationTitle.textContent = experience.education_title || 'Education';
+
+    const certificatesLink = experience.certificates_folder_link || '#';
+    const hasCertificatesLink = certificatesLink && certificatesLink !== '#';
+
+    certificatesCta.innerHTML = `
+        <a
+            href="${certificatesLink}"
+            class="btn btn-primary certificates-btn"
+            ${hasCertificatesLink ? 'target="_blank" rel="noopener noreferrer"' : ''}
+            ${hasCertificatesLink ? '' : 'aria-disabled="true"'}
+        >
+            <i class="fas fa-folder-open"></i>
+            <span>View Certificates</span>
+        </a>
+    `;
+
+    const timelineItems = (experience.education || []).map(edu => ({
+        date: edu.date,
+        title: edu.degree,
+        company: edu.institution,
+        logo: edu.logo,
+        description: edu.description,
+        icon: edu.icon || 'graduation-cap'
+    }));
+
+    educationTimeline.innerHTML = timelineItems.map((item, index) => `
+        <div class="timeline-item fade-in" data-position="${index % 2 === 0 ? 'left' : 'right'}">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <div class="timeline-icon">
+                    <i class="fas fa-${item.icon}"></i>
+                </div>
+                ${item.logo ? `<div class="timeline-logo"><img src="${item.logo}" alt="${item.company}"></div>` : ''}
+                <div class="timeline-date">${item.date}</div>
+                <h3 class="timeline-title">${item.title}</h3>
+                <div class="timeline-company">${item.company}</div>
+                <p class="timeline-description">${item.description}</p>
             </div>
         </div>
     `).join('');
@@ -935,7 +990,7 @@ function initializeContact() {
     const contactMethods = document.getElementById('contactMethods');
     contactMethods.innerHTML = contact.contact_methods.map(method => `
         <a href="${method.url}${method.value}" class="contact-method" ${method.type !== 'email' ? 'target="_blank"' : ''}>
-            <i class="${method.type === 'email' ? 'fas fa-envelope' : `fab fa-${method.icon}`}"></i>
+            <i class="${method.type === 'email' ? 'fas fa-envelope' : `${method.prefix || 'fab'} fa-${method.icon}`}"></i>
             <span>${method.label}</span>
         </a>
     `).join('');

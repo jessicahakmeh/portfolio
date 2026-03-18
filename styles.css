@@ -1954,6 +1954,17 @@ h4.section-toggle .section-title {
     margin: 0 auto;
 }
 
+.certificates-cta {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 2rem;
+}
+
+.certificates-btn[aria-disabled="true"] {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 .timeline::before {
     content: '';
     position: absolute;

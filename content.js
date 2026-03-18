@@ -110,18 +110,18 @@ window.data = {
             "Developed 6 hospital inteernal tools currently in production",
             "Enhanced Patient Satisfaction through workflow optimization and value added services",
             "Implemented secure streaming solutions for newborn nursery",
-            "Contributed to the deployment and R&D of patient bedside infotainment tablets"
+            "Contributed to the deployment and R&D of patient bedside infotainment tablets",
             "Coordinated the integration mechanism between HIS and 5 other ERP systems",
             "Named Employee of the Year 2025"
           ],
           "technologies": ["Mikrotik Router", "Windows Server", "Huawei Switches", "Exchange Server", "Active Directory", "Fortigate Firewall", "Grandstream UCM PBX"],
           "projects": [
-            { "project_id": "newborn-virtual-visit"" },
+            { "project_id": "newborn-virtual-visit" },
             { "project_id": "outpatient-queue-system" },
             { "project_id": "token-form-system" },
             { "project_id": "patient-search-engine" }
           ]
-        }
+        },
         {
           "company": "Safe Business Choice",
           "logo": "",
@@ -156,7 +156,10 @@ window.data = {
           "description": "Foundation in programming, databases, and information systems.",
           "achievements": []
         }
-      ]
+      ],
+      "education_title": "Education",
+      "education_subtitle": "Academic background",
+      "certificates_folder_link": "https://drive.google.com/drive/folders/13wMLCaYN5jFn9bdQG_n0PMUWy5meKuJE?usp=drive_link"
     },
     "projects": {
   "title": "Projects",
@@ -303,7 +306,7 @@ window.data = {
       "impact": [
         "Reduced patients with duplicate records",
         "Improved patient lookup speed",
-        "Improved billing accuracy"
+        "Improved billing accuracy",
         "Better data quality"
       ],
       "lessons_learned": "Simple fuzzy matching isn't enough; lookup needs to be organized.",
@@ -622,12 +625,6 @@ window.data = {
           "issuer": "Lebanese University",
           "date": "2025",
           "icon": "book-open"
-        },
-        {
-          "name": "Bachelor's in MIS",
-          "issuer": "Lebanese University",
-          "date": "2023",
-          "icon": "book-open"
         }
       ]
     },
@@ -660,7 +657,8 @@ window.data = {
         {
           "type": "Resume",
           "label": "Download my CV",
-          "icon": "download",
+          "icon": "file-arrow-down",
+          "prefix": "fas",
           "url": "https://drive.google.com/file/d/1NiLakvGxxmVWl84Polwmhm8CJKyWIfaP/view?usp=drive_link",
           "primary": true
         }
