@@ -659,7 +659,7 @@ window.data = {
           "label": "Download my CV",
           "icon": "file-arrow-down",
           "prefix": "fas",
-          "url": "https://drive.google.com/file/d/1NiLakvGxxmVWl84Polwmhm8CJKyWIfaP/view?usp=drive_link",
+          "url": "https://drive.google.com/file/d/1HoPr4mvjGyeTYrQTm99Uukq76QSwa_E4/view?usp=drive_link",
           "primary": true
         }
       ],
