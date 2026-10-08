@@ -252,7 +252,7 @@ window.data = {
       "company": "Saint Louis Hospital",
       "category": "Data Management",
       "year": "2026",
-      "featured": true,
+      "featured": false,
       "icon": "search",
       "role": "Systems Designer & Developer",
       "context": "Patient names were often entered inconsistently due to language differences and manual typing. Prescriptions are not unified in nomination across physicians.",
@@ -318,6 +318,130 @@ window.data = {
         "demo_video": null
       }
     },
+    {
+  "id": "clinical-assessment-workflow-engine",
+  "name": "Configurable Clinical Assessment & Multi-Step Workflow Engine",
+  "short_description": "A no-code builder for clinical forms and multi-step, signed, auto-routed workflows.",
+  "full_description": "A configurable engine inside the hospital system that lets non-developers build clinical assessment forms by defining reusable fields and building templates and chain them into multi-step workflows. Each step is assigned to a person, a role or a department, is completed and e-signed in the system, and then triggers the next step automatically. Forms, routing rules, assignments and signatures are data, not code, so new clinical processes can be added without a software release.",
+  "company": "Saint Louis Hospital",
+  "category": "Workflow Automation & Clinical Documentation",
+  "year": "2026",
+  "featured": true,
+  "icon": "workflow",
+  "role": "Systems Analyst, Lead Developer & QA Specialist",
+  "context": "Clinical documentation such as nursing assessments, physician forms and billing sheets was paper-based. Handing a patient from one clinician to the next depended on people physically passing forms and telling each other, with no record of who completed what, when, or who was waiting on whom; and the access to previous assessments and medical files was fragmented.",
+  "problem": [
+    "Paper assessments that were slow to pass between nurse, doctor and billing, and easy to lose",
+    "No trace of who completed or signed each stage, or when",
+    "Edited forms could change how past records looked, which weakened the medical record"
+  ],
+  "constraints": [
+    "Forms change their content regularly, so clinical staff, not developers, must be able to build and change forms and workflows",
+    "A signed record has to stay exactly as it was signed, even when the form is later edited",
+    "Must plug into the live outpatient queue seamlessly as an embed, so a signature moves the patient to the next desk, and changes the queue status"
+  ],
+  "approach": "Separated what is asked, who does it, and what happens next into three independent, data-driven layers (fields, templates and workflows), so each can change without touching the others or the code. Signing is the single event that closes a step, freezes the record and starts whatever comes next. Versioning is recorded.",
+  "architecture": [
+    "Field library: reusable, typed field definitions with validation and calculation rules",
+    "Template builder: versioned forms assembled from field references, sections, conditions and embedded sub-forms",
+    "Workflow builder: ordered steps, each tied to a template and an assignee",
+    "Trigger service: starts workflows automatically from events such as a signed assessment or patient check-in",
+    "Instance engine: runs one workflow per patient visit, activates each step, and records step history",
+    "E-signature and attestation layer: signs, freezes and unlocks the next step",
+    "Queue integration: a signature can move the patient's queue ticket to the next desk; previewing a pending assessment calls the patient ticket without further steps on the clinician",
+    "Print and PDF output with per-template letterheads, and a patient timeline with trend charts"
+  ],
+  "workflow": [
+    "Build fields and templates in the builders",
+    "Define a workflow: ordered steps, each with a template and an assignee",
+    "Start a run manually or through a trigger",
+    "Step 1 is created and appears in the assignee's pending list",
+    "Assignee fills in the form (drafts are saved) and signs with a redirection to the next user",
+    "The form is frozen and the next step is assigned automatically",
+    "Further steps repeat until the last signature completes the run",
+    "Signed forms appear on the patient timeline and can be printed or saved as PDF",
+    "scoped forms access",
+
+  ],
+  "features": [
+    "Drag-and-configure form builder with sections, conditional fields and embedded sub-forms",
+    " field types, including select, radio, multiselect, date, file, repeating group, user picker, APIs, computed, built in DB fields",
+    "Computed fields from formulas or range lookups, with circular-dependency checks",
+    "Field validation (min and max, patterns, allowed options) and conditional visibility rules",
+    "Multi-step workflows with step numbering that survives deleted steps",
+    "Assignment to a specific user, a role, a department, or the person chosen earlier in the run",
+    "Redirect to a chosen user, so a signer can pick who handles the next step",
+    "Template versioning, read-only templates, and per-template print letterheads",
+    "Pending-work lists per user and a dynamic workspace tab for each workflow they take part in",
+    "Patient timeline and graphable numeric fields for trends over time",
+    "Full step history, including who was assigned, when it started and when it completed"
+  ],
+  "scalability": [
+    "Workload grows with data, not code: a new department, form or process is a few rows of configuration, not a new module",
+    "One engine serves every workflow: each run is an independent instance, so many patients and many different workflows can be in progress at once",
+    "Work is routed by role and department as well as by person, so staff changes and larger teams need no changes to workflows",
+    "Reusable fields and embedded sub-forms mean a shared section (for example vitals) is defined once and used in many templates",
+    "Pending-work lookups are indexed on patient, status and assignee, so lists stay quick as signed records accumulate",
+    "Signed records store their own frozen form copy, so editing templates later never forces re-processing of history"
+  ],
+  "flexibility": [
+    "Three kinds of assignee (user, role, department) plus a context assignee chosen during the run",
+    "Mid-run re-routing: a signer can pick the person who receives the next step",
+    "Conditional logic (equals, not equals, filled, empty, greater than, less than, at least, at most) to show or hide sections and fields, with hiding that cascades",
+    "Embeddable sub-assessments, with cycle checks so templates cannot include each other in a loop",
+    "Computation types: free formulas and range-lookup scoring tables ",
+    "Field scope (global, user-specific or department-specific) and categories to keep large libraries organized",
+    "Workflows and templates can be activated, deactivated, archived or locked as read-only without deleting history",
+    "Printable output with HTML or image headers and footers per template"
+  ],
+  "buildability": [
+    "Built entirely through admin screens (Field, Template and Workflow builders), so clinical or operations staff can create and edit processes without developer time",
+    "Guard rails at build time: workflows cannot start with no steps, templates cannot embed themselves, and computed fields cannot depend on each other in a circle",
+    "Safe iteration: templates are versioned, signed records are unaffected by later edits, and any workflow can be switched off instead of deleted",
+    "Role-based permissions control who can build, who can fill, and who can see signed assessments",
+    "A built-in workflow can be reused as a base for others, and system workflows are protected from accidental change",
+    "Short path from idea to live process: define fields, assemble a template, add steps with assignees, optionally add a trigger, then test with a real patient run"
+  ],
+  "contribution": [
+    "Mapped the paper forms and hand-offs into reusable fields, templates and steps",
+    "Designed the data model for fields, templates, workflows, triggers, instances and step history",
+    "Built the form builder, workflow builder, instance engine and trigger service",
+    "Designed the signature, scoped per field historical access and frozen-template mechanism",
+    "Integrated the engine with the outpatient queue for the outpatient clinic workflow",
+    "Built printing, PDF output and the patient timeline and trend views",
+    "Testing, deployment and staff training"
+  ],
+  "technologies": ["PHP", "MySQL/MariaDB", "JavaScript", "HTML/CSS", "Chart.js"],
+  "challenges": [
+    {
+      "problem": "Edited templates risked changing how already-signed records looked",
+      "solution": "Froze a copy of the form structure at the moment of signing and render signed records from that copy, so history stays exactly as signed"
+    },
+    {
+      "problem": "Work had to reach the right person even when the assignee was not known in advance",
+      "solution": "Added assignment by role and department, and a context assignee chosen during the run (such as the doctor picked at the clinic), plus an in-form 'redirect to user' option"
+    },
+    {
+      "problem": "Letting non-developers build logic without breaking it",
+      "solution": "Added build-time checks (no circular calculations, no circular embedding, no empty workflows) and versioned templates so mistakes are caught early and are reversible"
+    }
+  ],
+  "impact": [
+    "Clinical forms and approvals now move between staff without paper",
+    "Every step has a recorded owner, start time, completion time and signature",
+    "New forms and processes can be introduced by configuration, without a software release",
+    "Signed records stay unchanged even as forms evolve, which supports audit and medical-record integrity",
+    "Staff can see their own pending work in one place and can track a patient's progress through each stage"
+  ],
+  "lessons_learned": "Treating forms, routing and signatures as data rather than code is what makes the system adaptable. The most important design choice was freezing the form at signing time, because it let the forms keep evolving without ever putting past records at risk.",
+  "tags": ["workflow", "healthcare", "no-code builder", "e-signature", "clinical documentation", "automation"],
+  "media": {
+    "cover_image": "",
+    "gallery": [],
+    "diagrams": [],
+    "demo_video": null
+  }
+},
     {
       "id": "newborn-virtual-visit",
       "name": "Newborn Virtual Visit Portal",
